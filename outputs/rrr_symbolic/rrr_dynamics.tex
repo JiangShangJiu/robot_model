@@ -1,0 +1,126 @@
+% 用 pdflatex 编译
+\documentclass[11pt]{article}
+\usepackage[margin=2cm]{geometry}
+\usepackage{amsmath,amssymb}
+\allowdisplaybreaks
+\setlength{\parindent}{0pt}
+\title{rrr\_arm}
+\date{}
+\begin{document}
+\maketitle
+
+% T —— 末端位姿（齐次变换）
+
+\section*{$T$}
+
+\begin{align*}
+T_{11} &= \cos{\left(q_{1} \right)} \cos{\left(q_{2} + q_{3} \right)} \\
+T_{12} &= - \sin{\left(q_{2} + q_{3} \right)} \cos{\left(q_{1} \right)} \\
+T_{13} &= - \sin{\left(q_{1} \right)} \\
+T_{14} &= - 0.05 \sin{\left(q_{1} \right)} \\
+&\quad + 0.28 \cos{\left(q_{1} \right)} \cos{\left(q_{2} \right)} \\
+T_{21} &= \sin{\left(q_{1} \right)} \cos{\left(q_{2} + q_{3} \right)} \\
+T_{22} &= - \sin{\left(q_{1} \right)} \sin{\left(q_{2} + q_{3} \right)} \\
+T_{23} &= \cos{\left(q_{1} \right)} \\
+T_{24} &= 0.28 \sin{\left(q_{1} \right)} \cos{\left(q_{2} \right)} + 0.05 \cos{\left(q_{1} \right)} \\
+T_{31} &= - \sin{\left(q_{2} + q_{3} \right)} \\
+T_{32} &= - \cos{\left(q_{2} + q_{3} \right)} \\
+T_{33} &= 0 \\
+T_{34} &= 0.3 - 0.28 \sin{\left(q_{2} \right)} \\
+T_{41} &= 0 \\
+T_{42} &= 0 \\
+T_{43} &= 0 \\
+T_{44} &= 1
+\end{align*}
+
+% J —— 末端几何雅可比 [v; omega] = J dq
+
+\section*{$J$}
+
+\begin{align*}
+J_{11} &= - 0.28 \sin{\left(q_{1} \right)} \cos{\left(q_{2} \right)} \\
+&\quad - 0.05 \cos{\left(q_{1} \right)} \\
+J_{12} &= - 0.28 \sin{\left(q_{2} \right)} \cos{\left(q_{1} \right)} \\
+J_{13} &= 0 \\
+J_{21} &= - 0.05 \sin{\left(q_{1} \right)} \\
+&\quad + 0.28 \cos{\left(q_{1} \right)} \cos{\left(q_{2} \right)} \\
+J_{22} &= - 0.28 \sin{\left(q_{1} \right)} \sin{\left(q_{2} \right)} \\
+J_{23} &= 0 \\
+J_{31} &= 0 \\
+J_{32} &= - 0.28 \cos{\left(q_{2} \right)} \\
+J_{33} &= 0 \\
+J_{41} &= 0 \\
+J_{42} &= - \sin{\left(q_{1} \right)} \\
+J_{43} &= - \sin{\left(q_{1} \right)} \\
+J_{51} &= 0 \\
+J_{52} &= \cos{\left(q_{1} \right)} \\
+J_{53} &= \cos{\left(q_{1} \right)} \\
+J_{61} &= 1 \\
+J_{62} &= 0 \\
+J_{63} &= 0
+\end{align*}
+
+% M —— 惯性矩阵
+
+\section*{$M$}
+
+\textit{中间量：}
+\begin{align*}
+x_{0} &= \sin{\left(q_{2} \right)} \\
+x_{1} &= \cos{\left(q_{2} \right)} \\
+x_{2} &= \cos{\left(q_{3} \right)} \\
+x_{3} &= x_{0} x_{2} \\
+x_{4} &= \sin{\left(q_{3} \right)} \\
+x_{5} &= x_{1} x_{4} \\
+x_{6} &= x_{3} + x_{5} \\
+x_{7} &= 0.05 x_{3} + 0.05 x_{5} \\
+x_{8} &= l_{3z} x_{6} + m_{3} x_{7} \\
+x_{9} &= x_{0} x_{4} \\
+x_{10} &= x_{1} x_{2} \\
+x_{11} &= - x_{10} + x_{9} \\
+x_{12} &= - 0.05 x_{10} + 0.05 x_{9} \\
+x_{13} &= l_{3z} x_{11} + m_{3} x_{12} \\
+x_{14} &= 0.05 x_{4} \\
+x_{15} &= 0.28 x_{1} \\
+x_{16} &= - x_{6} \\
+x_{17} &= L_{3xy} x_{16} + L_{3yy} x_{11} - l_{3x} x_{15} + l_{3z} x_{12} \\
+x_{18} &= L_{3xx} x_{16} + L_{3xy} x_{11} + l_{3y} x_{15} - l_{3z} x_{7} \\
+x_{19} &= 0.28 l_{3x} \\
+x_{20} &= 0.28 l_{3y} \\
+x_{21} &= 0.28 x_{2} \\
+x_{22} &= 0.28 x_{4} \\
+x_{23} &= L_{3xz} x_{16} + L_{3yz} x_{11} + l_{3x} x_{7} - l_{3y} x_{12} \\
+x_{24} &= - L_{2xz} x_{0} - L_{2yz} x_{1} + x_{13} x_{22} + x_{21} x_{8} + x_{23} \\
+x_{25} &= L_{3zz} + x_{19} x_{2} - x_{20} x_{4} \\
+y_{0} &= - L_{2xx} x_{0} - L_{2xy} x_{1} - x_{13} x_{14} - x_{17} x_{4} + x_{18} x_{2} \\
+&\quad - 0.05 x_{2} x_{8} \\
+y_{1} &= - L_{2xy} x_{0} - L_{2yy} x_{1} - 0.0784 m_{3} x_{1} + x_{11} x_{19} + 0.05 x_{13} x_{2} \\
+&\quad - x_{14} x_{8} - x_{16} x_{20} + x_{17} x_{2} + x_{18} x_{4}
+\end{align*}
+\textit{结果：}
+\begin{align*}
+M_{11} &= L_{1zz} - x_{0} y_{0} - x_{1} y_{1} \\
+M_{12} &= x_{24} \\
+M_{13} &= x_{23} \\
+M_{21} &= x_{24} \\
+M_{22} &= L_{2zz} + x_{21} \left(l_{3x} + m_{3} x_{21}\right) \\
+&\quad + x_{22} \left(- l_{3y} + 0.28 m_{3} x_{4}\right) + x_{25} \\
+M_{23} &= x_{25} \\
+M_{31} &= x_{23} \\
+M_{32} &= x_{25} \\
+M_{33} &= L_{3zz}
+\end{align*}
+
+% g —— 重力项
+
+\section*{$g$}
+
+\begin{align*}
+g_{1} &= 0 \\
+g_{2} &= - 9.81 l_{2x} \cos{\left(q_{2} \right)} + 9.81 l_{2y} \sin{\left(q_{2} \right)} \\
+&\quad - 9.81 l_{3x} \cos{\left(q_{2} + q_{3} \right)} \\
+&\quad + 9.81 l_{3y} \sin{\left(q_{2} + q_{3} \right)} - 2.7468 m_{3} \cos{\left(q_{2} \right)} \\
+g_{3} &= 9.81 \left(- l_{3x} \cos{\left(q_{2} + q_{3} \right)} + l_{3y} \sin{\left(q_{2} + q_{3} \right)}\right)
+\end{align*}
+
+\end{document}

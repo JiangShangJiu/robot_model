@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "robot-model"
+version = "0.1.0"
+description = "机器人建模、激励轨迹设计、MuJoCo 仿真实验与动力学参数辨识"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=1.23",
+    "sympy>=1.12",
+]
+
+[project.optional-dependencies]
+viz = ["mujoco>=3.0", "matplotlib>=3.6"]
+# 测量预处理（零相位滤波）与激励系数约束优化需要 scipy
+ident = ["scipy>=1.10"]
+sim = ["mujoco>=3.0"]
+dev = ["pytest>=7.0", "nbformat>=5.7", "nbclient>=0.7", "scipy>=1.10"]
+
+[project.scripts]
+robot-identify = "robot_model.cli.identify_robot:main"
+robot-identify-rrr = "robot_model.cli.identify_rrr:main"
+robot-view-franka = "robot_model.cli.view_franka:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["robot_model*"]
+namespaces = false
+
+[tool.setuptools.package-data]
+robot_model = ["assets/models/**/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+markers = [
+    "slow: 分钟级用例（7 轴全符号导出），日常可 -m \"not slow\" 跳过",
+]

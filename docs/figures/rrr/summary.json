@@ -1,0 +1,221 @@
+{
+  "robot": "rrr_realistic",
+  "mujoco_version": "3.4.0",
+  "source_report_sha256": "654bd8abbaab729aa3d30d4f57ea78fc8d7d01bcff118f5e28fdeab3c0a2d9ce",
+  "experiment": {
+    "trials": 8,
+    "recorded_periods": 2,
+    "warmup_periods": 1,
+    "closed_loop_screening": true
+  },
+  "recovery_update": {
+    "source_directory": "/home/xiaomeng/code/robot_model/outputs/showcase-fresh/rrr",
+    "source_report_sha256": "88a842ca4e753a7ba297eb21499fbf4a7a4ee0ba4f5c7a4f5018af1bd26412b4",
+    "operation": "inertia recovery only; acquisition, screening, base fit and validation trajectory unchanged",
+    "config": {
+      "mass_lower": [
+        1.5,
+        1.1,
+        0.7
+      ],
+      "mass_upper": [
+        6.0,
+        4.4,
+        2.8
+      ],
+      "com_lower": [
+        [
+          -0.05500000000000001,
+          -0.05500000000000003,
+          -0.37
+        ],
+        [
+          -0.057999999999999996,
+          -0.044000000000000004,
+          -0.04400000000000003
+        ],
+        [
+          -0.04950000000000003,
+          -0.038500000000000006,
+          -0.038500000000000034
+        ]
+      ],
+      "com_upper": [
+        [
+          0.05500000000000001,
+          0.05500000000000003,
+          0.07
+        ],
+        [
+          0.338,
+          0.044000000000000004,
+          0.04400000000000003
+        ],
+        [
+          0.2695,
+          0.038500000000000006,
+          0.038500000000000034
+        ]
+      ],
+      "inertia_diagonal_lower": 0.0,
+      "inertia_diagonal_upper": 1.0,
+      "inertia_offdiagonal_bound": 1.0,
+      "drive_inertia_upper": 1.0,
+      "friction_upper": 5.0,
+      "offset_bound": 5.0,
+      "total_mass_lower": 4.619999999999999,
+      "total_mass_upper": 8.58,
+      "runs": 3,
+      "penalty_weights": [
+        0.0,
+        10.0,
+        20.0,
+        30.0,
+        40.0
+      ],
+      "annealing_maxiter": 10,
+      "local_maxiter": 500,
+      "ftol": 1e-10,
+      "seed": 0,
+      "feasibility_tolerance": 1e-06,
+      "max_base_error": 0.05,
+      "nominal_prior_weight": 0.001,
+      "geometry_center": [
+        [
+          0.0,
+          0.0,
+          -0.12
+        ],
+        [
+          0.14,
+          0.0,
+          0.02
+        ],
+        [
+          0.1,
+          0.01,
+          0.0
+        ]
+      ],
+      "geometry_radius": [
+        0.253,
+        0.1995634918610405,
+        0.17095754036671526
+      ]
+    }
+  },
+  "enhancements": {
+    "optimization": true,
+    "optimization_starts": 2,
+    "optimization_maxiter": 20,
+    "robust_seeds": null,
+    "periodic_average": false,
+    "inertial_recovery": true
+  },
+  "n_base": 22,
+  "rank": 22,
+  "condition_number": 45.704409573427064,
+  "residual_rms_Nm": 0.01425211603273906,
+  "samples": 3133,
+  "raw_samples": 5000,
+  "base_parameter_relative_error": 0.051862455825015426,
+  "validation_rms_Nm": {
+    "measured_fitted": [
+      0.04604339020969005,
+      0.024441342888062583,
+      0.03087345310152224
+    ],
+    "measured_nominal": [
+      0.4624449299385964,
+      0.686566824234368,
+      0.23224819189241444
+    ],
+    "truth_fitted": [
+      0.06694414605675796,
+      0.07754005547645455,
+      0.03580887130862015
+    ],
+    "truth_nominal": [
+      0.42152377698971255,
+      0.6315079156772326,
+      0.2424966368780064
+    ],
+    "measured_recovered": [
+      0.039669678622635776,
+      0.0278673787588379,
+      0.027325671269088008
+    ],
+    "truth_recovered": [
+      0.06518806987670997,
+      0.08583512183184708,
+      0.03288979906628397
+    ]
+  },
+  "continuous_validation": {
+    "samples": 2480,
+    "scored_samples": 1570,
+    "scope": "Aligned, filtered, edge-trimmed full timeline including low-speed samples; display only.",
+    "rms_Nm": {
+      "measured_fitted": [
+        0.08026651902028097,
+        0.05623828401947993,
+        0.04464234780405836
+      ],
+      "measured_nominal": [
+        0.42628328508870084,
+        0.6788596694628618,
+        0.22697164751864948
+      ]
+    },
+    "overall_rms_Nm": {
+      "measured_fitted": 0.06217823274680438,
+      "measured_nominal": 0.4810003529959102
+    }
+  },
+  "display_preprocessing": "Saved raw measurements, same alignment/filtering/edge trim, low-speed intervals retained for continuous display only.",
+  "screening": {
+    "accepted": 8,
+    "total": 10,
+    "selected": 9
+  },
+  "warnings": [
+    "验证实际速度或加速度超过配置的轨迹设计上限"
+  ],
+  "validation_overall_rms_Nm": {
+    "measured_fitted": 0.03497877037378302,
+    "measured_nominal": 0.4963763827320537,
+    "reduction_fraction": 0.929531759385368
+  },
+  "recovery": {
+    "success": true,
+    "solver_success": true,
+    "physical_feasible": true,
+    "matches_base": true,
+    "base_error": 0.007197962498621299,
+    "geometry_enabled": true,
+    "geometry_feasible": true,
+    "nominal_prior_enabled": true,
+    "nominal_prior_weight": 0.001,
+    "mass_bound_contacts": [],
+    "com_bound_contacts": [
+      {
+        "link": 2,
+        "component": "z",
+        "bound": "upper",
+        "value": 0.043999999765177204,
+        "bound_value": 0.04400000000000003
+      }
+    ],
+    "inertia_bound_contacts": [],
+    "masses": [
+      3.0001472596012047,
+      1.5012567431185717,
+      1.6230291348058092
+    ],
+    "nominal_masses": [
+      3.0,
+      2.2,
+      1.4
+    ]
+  }
+}

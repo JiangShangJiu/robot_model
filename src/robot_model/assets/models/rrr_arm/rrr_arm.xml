@@ -1,0 +1,88 @@
+<mujoco model="rrr_arm">
+  <!-- 空间 3R 拟人臂：腰(绕 z) + 肩 + 肘。
+       body 的 pos/quat 按 MDH 相邻变换写死，使 link{i} 与 MDH 帧 i 逐帧对齐：
+           T(i-1,i) = Rx(alpha) Tx(a) Rz(q) Tz(d)，Rz 与 Tz 对易
+           => 固定部分 = Rx(alpha) Tx(a) Tz(d)，pos = (a, -d sin(alpha), d cos(alpha))
+       MDH 表见 src/robot_model/robots/rrr.py，改一处必须同步另一处。
+
+       刻意保持"裸刚体"：armature/damping/frictionloss 全 0、无碰撞、无限位，
+       这样 mj_inverse 的输出就是纯刚体 tau = M ddq + C dq + g，可直接与本库对拍。 -->
+  <compiler angle="radian" inertiafromgeom="false" autolimits="true"/>
+
+  <option gravity="0 0 -9.81" integrator="implicitfast"/>
+
+  <visual>
+    <!-- 放大离屏缓冲，便于 notebook / 脚本里直接 mujoco.Renderer 出图 -->
+    <global offwidth="1280" offheight="960"/>
+  </visual>
+
+  <default>
+    <joint axis="0 0 1" damping="0" armature="0" frictionloss="0" limited="false"/>
+    <!-- density=0 + inertiafromgeom=false：几何只用于看，惯性全部由 inertial 显式给定 -->
+    <geom type="capsule" contype="0" conaffinity="0" density="0" rgba="0.7 0.7 0.75 1"/>
+  </default>
+
+  <worldbody>
+    <light name="top" pos="0 0 2"/>
+    <geom name="ground" type="plane" size="1 1 0.05" rgba="0.3 0.3 0.35 1"/>
+
+    <body name="base">
+      <geom name="base_geom" fromto="0 0 0 0 0 0.06" size="0.07" rgba="0.35 0.35 0.4 1"/>
+
+      <!-- alpha=0, a=0, d=0.30 -->
+      <body name="link1" pos="0 0 0.30">
+        <inertial mass="3.0" pos="0 0 -0.12"
+          fullinertia="0.0244 0.0244 0.0038 0.0002 -0.0003 0.0001"/>
+        <joint name="joint1"/>
+        <geom name="link1_geom" fromto="0 0 -0.30 0 0 0" size="0.05"/>
+
+        <!-- alpha=-pi/2, a=0, d=0 -->
+        <body name="link2" quat="1 -1 0 0">
+          <inertial mass="2.2" pos="0.14 0 0.02"
+            fullinertia="0.0018 0.0153 0.0153 0.0004 0.0002 -0.0003"/>
+          <joint name="joint2"/>
+          <geom name="link2_geom" fromto="0 0 0 0.28 0 0" size="0.04"/>
+
+          <!-- alpha=0, a=0.28, d=0.05（肘部横向偏置，制造 a、d 同时非零的情形） -->
+          <body name="link3" pos="0.28 0 0.05">
+            <inertial mass="1.4" pos="0.10 0.01 0"
+              fullinertia="0.0009 0.0061 0.0061 0.0002 -0.0001 0.0002"/>
+            <joint name="joint3"/>
+            <geom name="link3_geom" fromto="0 0 0 0.22 0 0" size="0.035"
+              rgba="0.8 0.55 0.2 1"/>
+            <site name="tool" pos="0.22 0 0" size="0.012" rgba="1 0 0 1"/>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+
+  <actuator>
+    <motor name="motor1" joint="joint1" gear="1"/>
+    <motor name="motor2" joint="joint2" gear="1"/>
+    <motor name="motor3" joint="joint3" gear="1"/>
+  </actuator>
+
+  <!-- 辨识用不到这些（力矩真值直接取 mj_inverse），但正向仿真时是测量入口。
+       每个 sensor 可加 noise="..."，需同时开 <flag sensornoise="enable"/>；
+       想要可复现的噪声，建议改在采样层注入（identification.add_noise）。 -->
+  <sensor>
+    <jointpos name="enc1" joint="joint1"/>
+    <jointpos name="enc2" joint="joint2"/>
+    <jointpos name="enc3" joint="joint3"/>
+    <jointvel name="tach1" joint="joint1"/>
+    <jointvel name="tach2" joint="joint2"/>
+    <jointvel name="tach3" joint="joint3"/>
+    <jointactuatorfrc name="trq1" joint="joint1"/>
+    <jointactuatorfrc name="trq2" joint="joint2"/>
+    <jointactuatorfrc name="trq3" joint="joint3"/>
+    <framepos name="tool_pos" objtype="site" objname="tool"/>
+    <framequat name="tool_quat" objtype="site" objname="tool"/>
+    <framelinvel name="tool_linvel" objtype="site" objname="tool"/>
+    <subtreecom name="arm_com" body="link1"/>
+  </sensor>
+
+  <keyframe>
+    <key name="home" qpos="0 -0.6 1.2"/>
+  </keyframe>
+</mujoco>

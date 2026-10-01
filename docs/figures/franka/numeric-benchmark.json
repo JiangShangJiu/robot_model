@@ -1,0 +1,21 @@
+{
+  "method": "khalil",
+  "seed": 0,
+  "samples": 2255,
+  "base_samples": 400,
+  "rank": 62,
+  "before": {
+    "base_seconds": 8.191900386009365,
+    "regressor_seconds": 56.379563301976305,
+    "milliseconds_per_sample": 25.002023637240047
+  },
+  "after": {
+    "base_seconds": 0.34871331095928326,
+    "regressor_seconds": 1.9164164969697595,
+    "milliseconds_per_sample": 0.8498521050863678
+  },
+  "speedup": 29.419264231509043,
+  "max_regressor_difference": 0.0,
+  "max_base_mapping_difference": 0.0,
+  "max_identified_parameter_difference": 0.0
+}

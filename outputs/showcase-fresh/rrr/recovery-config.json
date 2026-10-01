@@ -1,0 +1,36 @@
+{
+  "mass_lower": 0.001,
+  "mass_upper": 10.0,
+  "com_lower": [
+    -0.5,
+    -0.5,
+    -0.5
+  ],
+  "com_upper": [
+    0.5,
+    0.5,
+    0.5
+  ],
+  "inertia_diagonal_lower": 0.0,
+  "inertia_diagonal_upper": 1.0,
+  "inertia_offdiagonal_bound": 1.0,
+  "drive_inertia_upper": 1.0,
+  "friction_upper": 5.0,
+  "offset_bound": 5.0,
+  "total_mass_lower": null,
+  "total_mass_upper": null,
+  "runs": 3,
+  "penalty_weights": [
+    0.0,
+    10.0,
+    20.0,
+    30.0,
+    40.0
+  ],
+  "annealing_maxiter": 10,
+  "local_maxiter": 500,
+  "ftol": 1e-10,
+  "seed": 0,
+  "feasibility_tolerance": 1e-06,
+  "max_base_error": 0.05
+}

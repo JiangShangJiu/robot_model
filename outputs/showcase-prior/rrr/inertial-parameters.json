@@ -1,0 +1,801 @@
+{
+  "success": true,
+  "full_parameters": [
+    0.06760136219018982,
+    0.00020000177653374342,
+    -0.0003056620683193788,
+    0.06760115125812854,
+    0.00011273909643764138,
+    0.011511029986010774,
+    -4.7178269511896735e-05,
+    0.00010615400883826131,
+    -0.36001599738901285,
+    3.0001472596012047,
+    0.03023926360524035,
+    0.30811905892783437,
+    0.20172963967766772,
+    0.007090214794600589,
+    0.003129410816332561,
+    -0.014140537868059747,
+    0.08252169909886159,
+    -0.0007048913568212038,
+    0.08213923207889809,
+    0.30561944551535863,
+    -0.004134743843011675,
+    0.06605529634468785,
+    1.5012567431185717,
+    0.018071475099741618,
+    0.22366986998583033,
+    0.17426415134982942,
+    0.0022982175510459,
+    -0.0015032059554854773,
+    0.00026555153045886736,
+    0.02023031441244089,
+    0.0010840453524395095,
+    0.01990353912307563,
+    0.15407526824683698,
+    0.011078456391155069,
+    0.0005501568715131987,
+    1.6230291348058092,
+    0.025752607149207612,
+    0.14092150796098674,
+    0.10603622436930735
+  ],
+  "base_parameters": [
+    0.2758603797954949,
+    0.30811905892783437,
+    0.20172963967766772,
+    -0.20267696847303643,
+    0.003129410816332561,
+    -0.03701698967936477,
+    -0.0007048913568212038,
+    0.22745619134741513,
+    0.7600676032609852,
+    -0.004134743843011675,
+    0.22366986998583033,
+    0.17426415134982942,
+    -0.01793209686139499,
+    -0.0015032059554854773,
+    0.00026555153045886736,
+    0.0010840453524395095,
+    0.01990353912307563,
+    0.15407526824683698,
+    0.011078456391155069,
+    0.025752607149207612,
+    0.14092150796098674,
+    0.10603622436930735
+  ],
+  "parameter_names": [
+    "L_1xx",
+    "L_1xy",
+    "L_1xz",
+    "L_1yy",
+    "L_1yz",
+    "L_1zz",
+    "l_1x",
+    "l_1y",
+    "l_1z",
+    "m_1",
+    "Ia_1",
+    "fv_1",
+    "fc_1",
+    "L_2xx",
+    "L_2xy",
+    "L_2xz",
+    "L_2yy",
+    "L_2yz",
+    "L_2zz",
+    "l_2x",
+    "l_2y",
+    "l_2z",
+    "m_2",
+    "Ia_2",
+    "fv_2",
+    "fc_2",
+    "L_3xx",
+    "L_3xy",
+    "L_3xz",
+    "L_3yy",
+    "L_3yz",
+    "L_3zz",
+    "l_3x",
+    "l_3y",
+    "l_3z",
+    "m_3",
+    "Ia_3",
+    "fv_3",
+    "fc_3"
+  ],
+  "masses": [
+    3.0001472596012047,
+    1.5012567431185717,
+    1.6230291348058092
+  ],
+  "centers_of_mass": [
+    [
+      -1.5725317935949557e-05,
+      3.538293278722987e-05,
+      -0.11999944210634117
+    ],
+    [
+      0.203575735407185,
+      -0.002754188357164372,
+      0.043999999765177204
+    ],
+    [
+      0.09493068543422768,
+      0.006825790217549345,
+      0.00033896919021051547
+    ]
+  ],
+  "inertias_com": [
+    [
+      [
+        0.02439963959811014,
+        0.00020000010722820427,
+        -0.0003000007022984086
+      ],
+      [
+        0.00020000010722820427,
+        0.02439943168019574,
+        0.00010000067459969841
+      ],
+      [
+        -0.0003000007022984086,
+        0.00010000067459969841,
+        0.011511025488077326
+      ]
+    ],
+    [
+      [
+        0.004172393907593338,
+        0.002287677297771129,
+        -0.0006932823371503805
+      ],
+      [
+        0.002287677297771129,
+        0.01739856269968137,
+        -0.0008868200849427854
+      ],
+      [
+        -0.0006932823371503805,
+        -0.0008868200849427854,
+        0.01991114084002057
+      ]
+    ],
+    [
+      [
+        0.0022224118455563785,
+        -0.000451520496719926,
+        0.00031777829936796564
+      ],
+      [
+        -0.000451520496719926,
+        0.00560365710307693,
+        0.001087800607831202
+      ],
+      [
+        0.00031777829936796564,
+        0.001087800607831202,
+        0.005201449080680606
+      ]
+    ]
+  ],
+  "extras": {
+    "Ia_1": 0.03023926360524035,
+    "fv_1": 0.30811905892783437,
+    "fc_1": 0.20172963967766772,
+    "Ia_2": 0.018071475099741618,
+    "fv_2": 0.22366986998583033,
+    "fc_2": 0.17426415134982942,
+    "Ia_3": 0.025752607149207612,
+    "fv_3": 0.14092150796098674,
+    "fc_3": 0.10603622436930735
+  },
+  "links": [
+    {
+      "link": 1,
+      "mass": 3.0001472596012047,
+      "center_of_mass": [
+        -1.5725317935949557e-05,
+        3.538293278722987e-05,
+        -0.11999944210634117
+      ],
+      "inertia_com": [
+        [
+          0.02439963959811014,
+          0.00020000010722820427,
+          -0.0003000007022984086
+        ],
+        [
+          0.00020000010722820427,
+          0.02439943168019574,
+          0.00010000067459969841
+        ],
+        [
+          -0.0003000007022984086,
+          0.00010000067459969841,
+          0.011511025488077326
+        ]
+      ]
+    },
+    {
+      "link": 2,
+      "mass": 1.5012567431185717,
+      "center_of_mass": [
+        0.203575735407185,
+        -0.002754188357164372,
+        0.043999999765177204
+      ],
+      "inertia_com": [
+        [
+          0.004172393907593338,
+          0.002287677297771129,
+          -0.0006932823371503805
+        ],
+        [
+          0.002287677297771129,
+          0.01739856269968137,
+          -0.0008868200849427854
+        ],
+        [
+          -0.0006932823371503805,
+          -0.0008868200849427854,
+          0.01991114084002057
+        ]
+      ]
+    },
+    {
+      "link": 3,
+      "mass": 1.6230291348058092,
+      "center_of_mass": [
+        0.09493068543422768,
+        0.006825790217549345,
+        0.00033896919021051547
+      ],
+      "inertia_com": [
+        [
+          0.0022224118455563785,
+          -0.000451520496719926,
+          0.00031777829936796564
+        ],
+        [
+          -0.000451520496719926,
+          0.00560365710307693,
+          0.001087800607831202
+        ],
+        [
+          0.00031777829936796564,
+          0.001087800607831202,
+          0.005201449080680606
+        ]
+      ]
+    }
+  ],
+  "units": {
+    "mass": "kg",
+    "center_of_mass": "m",
+    "inertia_com": "kg*m^2"
+  },
+  "inertia_frame": "at center of mass, expressed in link coordinate axes",
+  "report": {
+    "success": true,
+    "solver_success": true,
+    "physical_feasible": true,
+    "total_mass": 6.124433137525585,
+    "max_bound_violation": 0.0,
+    "total_mass_violation": 0.0,
+    "inertia_eigenvalues": [
+      [
+        0.01150319732051061,
+        0.024205810575257516,
+        0.024601088870615073
+      ],
+      [
+        0.0037699592051857584,
+        0.017396921759948527,
+        0.020315216482160982
+      ],
+      [
+        0.0020889931562574544,
+        0.0044247692075579,
+        0.006513755665498559
+      ]
+    ],
+    "triangle_margins": [
+      0.005553959512576527,
+      0.00042583224148665805,
+      3.3491583985301165e-09
+    ],
+    "geometry_enabled": true,
+    "geometry_feasible": true,
+    "geometry_signed_violations": [
+      -0.8429722239701036,
+      -0.5369496978739512,
+      -0.8614536203834845
+    ],
+    "geometry_violations": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "geometry_violation_definition": "max(trace(I_com)/(2*m*r^2) + ||c-center||^2/r^2 - 1, 0)",
+    "geometry_constraint": "selected spherical mass-distribution envelope; second-moment constraint, not exact CAD geometry",
+    "geometry_second_moment_margins": [
+      0.16188137305775468,
+      0.032103380207955695,
+      0.0408634225073764
+    ],
+    "mass_bound_contacts": [],
+    "inertia_bound_contacts": [],
+    "bound_contact_definition": "distance <= max(feasibility_tolerance, 1e-4*(upper-lower))",
+    "physical_penalty": 0.0,
+    "matches_base": true,
+    "base_error": 0.007197962498621299,
+    "base_residual_norm": 0.00726700159927575,
+    "base_residual": [
+      -0.0001793891856094465,
+      0.0006517722756835265,
+      0.0001050873384046136,
+      -0.00010249141552881591,
+      -0.0002981294795112101,
+      0.0013189435077343575,
+      0.0017335650448942128,
+      -0.000529863963005972,
+      0.0005050143690895625,
+      -0.0026364882519447396,
+      0.00023543410531037812,
+      2.3972725309018283e-05,
+      6.807480896074691e-05,
+      0.00036545897344686254,
+      -0.004121332045801021,
+      -0.004680919538128038,
+      0.000566903043260833,
+      0.00045847477939681136,
+      -0.0001790962822564232,
+      1.0316169134216846e-09,
+      0.0005098426145019319,
+      -0.0003098277012564682
+    ],
+    "target_base_parameters": [
+      0.2760397689811043,
+      0.30746728665215084,
+      0.2016245523392631,
+      -0.2025744770575076,
+      0.003427540295843771,
+      -0.03833593318709913,
+      -0.0024384564017154164,
+      0.2279860553104211,
+      0.7595625888918957,
+      -0.0014982555910669354,
+      0.22343443588051995,
+      0.1742401786245204,
+      -0.01800017167035574,
+      -0.0018686649289323398,
+      0.004386883576259888,
+      0.005764964890567548,
+      0.019336636079814798,
+      0.15361679346744017,
+      0.011257552673411492,
+      0.0257526061175907,
+      0.1404116653464848,
+      0.10634605207056382
+    ],
+    "base_error_definition": "norm(B*pi - target) / max(norm(target), 1)",
+    "iterations": 535,
+    "message": "Optimization terminated successfully",
+    "selected_run": 2,
+    "loss": 0.00010412966964190992,
+    "candidate_selection": "successful candidates first, then minimum penalized loss",
+    "nominal_prior_enabled": true,
+    "nominal_prior_weight": 0.001,
+    "nominal_prior_penalty": 0.05034986609903056,
+    "nominal_prior_rms": 0.22438775835377153,
+    "nominal_prior_loss": 5.1320357398033616e-05,
+    "nominal_prior_scales": {
+      "mass": [
+        3.0,
+        2.2,
+        1.4
+      ],
+      "center_of_mass": [
+        0.253,
+        0.1995634918610405,
+        0.17095754036671526
+      ],
+      "inertia_com": [
+        0.03471944700020437,
+        0.02172556098238658,
+        0.008683893136145865
+      ]
+    },
+    "nominal_prior_definition": "sum_links((dm/m0)^2 + ||dc/length||^2 + ||dI/inertia_scale||_F^2)/(3*n); extras excluded",
+    "nominal_prior_scale_definition": "mass=m0; length=geometry_radius or COM-box half-diagonal; inertia_scale=max(||I0||_F, 1e-6*m0*length^2)",
+    "objective_definition": "||B*pi-target||^2 + max(||target||,1)^2*nominal_prior_weight*nominal_prior_penalty + penalty_weight*physical_penalty",
+    "config": {
+      "mass_lower": [
+        1.5,
+        1.1,
+        0.7
+      ],
+      "mass_upper": [
+        6.0,
+        4.4,
+        2.8
+      ],
+      "com_lower": [
+        [
+          -0.05500000000000001,
+          -0.05500000000000003,
+          -0.37
+        ],
+        [
+          -0.057999999999999996,
+          -0.044000000000000004,
+          -0.04400000000000003
+        ],
+        [
+          -0.04950000000000003,
+          -0.038500000000000006,
+          -0.038500000000000034
+        ]
+      ],
+      "com_upper": [
+        [
+          0.05500000000000001,
+          0.05500000000000003,
+          0.07
+        ],
+        [
+          0.338,
+          0.044000000000000004,
+          0.04400000000000003
+        ],
+        [
+          0.2695,
+          0.038500000000000006,
+          0.038500000000000034
+        ]
+      ],
+      "inertia_diagonal_lower": 0.0,
+      "inertia_diagonal_upper": 1.0,
+      "inertia_offdiagonal_bound": 1.0,
+      "drive_inertia_upper": 1.0,
+      "friction_upper": 5.0,
+      "offset_bound": 5.0,
+      "total_mass_lower": 4.619999999999999,
+      "total_mass_upper": 8.58,
+      "runs": 3,
+      "penalty_weights": [
+        0.0,
+        10.0,
+        20.0,
+        30.0,
+        40.0
+      ],
+      "annealing_maxiter": 10,
+      "local_maxiter": 500,
+      "ftol": 1e-10,
+      "seed": 0,
+      "feasibility_tolerance": 1e-06,
+      "max_base_error": 0.05,
+      "nominal_prior_weight": 0.001,
+      "geometry_center": [
+        [
+          0.0,
+          0.0,
+          -0.12
+        ],
+        [
+          0.14,
+          0.0,
+          0.02
+        ],
+        [
+          0.1,
+          0.01,
+          0.0
+        ]
+      ],
+      "geometry_radius": [
+        0.253,
+        0.1995634918610405,
+        0.17095754036671526
+      ]
+    },
+    "attempts": [
+      {
+        "run": 0,
+        "stage": 0,
+        "penalty_weight": 0.0,
+        "initialization": "nominal",
+        "loss": 6.735721316930618e-05,
+        "base_residual_norm": 0.005629169755879046,
+        "physical_penalty": 0.0038293034788190973,
+        "physical_feasible": false,
+        "solver_success": true,
+        "geometry_feasible": true,
+        "nominal_prior_penalty": 0.03499513151611147,
+        "local_iterations": 85,
+        "message": "Optimization terminated successfully"
+      },
+      {
+        "run": 0,
+        "stage": 1,
+        "penalty_weight": 10.0,
+        "initialization": "nominal",
+        "loss": 0.0006674915274056111,
+        "base_residual_norm": 0.020604149610520112,
+        "physical_penalty": 0.0,
+        "physical_feasible": true,
+        "solver_success": true,
+        "geometry_feasible": true,
+        "nominal_prior_penalty": 0.23836605180468437,
+        "local_iterations": 16,
+        "message": "Optimization terminated successfully"
+      },
+      {
+        "run": 0,
+        "stage": 2,
+        "penalty_weight": 20.0,
+        "initialization": "nominal",
+        "loss": 0.00014321030559547547,
+        "base_residual_norm": 0.008913360437700697,
+        "physical_penalty": 0.0,
+        "physical_feasible": true,
+        "solver_success": true,
+        "geometry_feasible": true,
+        "nominal_prior_penalty": 0.06255653699713278,
+        "local_iterations": 40,
+        "message": "Optimization terminated successfully"
+      },
+      {
+        "run": 0,
+        "stage": 3,
+        "penalty_weight": 30.0,
+        "initialization": "nominal",
+        "loss": 0.0001432100220703495,
+        "base_residual_norm": 0.008913344707764049,
+        "physical_penalty": 0.0,
+        "physical_feasible": true,
+        "solver_success": true,
+        "geometry_feasible": true,
+        "nominal_prior_penalty": 0.06255653394380217,
+        "local_iterations": 2,
+        "message": "Optimization terminated successfully"
+      },
+      {
+        "run": 0,
+        "stage": 4,
+        "penalty_weight": 40.0,
+        "initialization": "nominal",
+        "loss": 0.0001432099966637396,
+        "base_residual_norm": 0.008913343275514109,
+        "physical_penalty": 0.0,
+        "physical_feasible": true,
+        "solver_success": true,
+        "geometry_feasible": true,
+        "nominal_prior_penalty": 0.06255653406708873,
+        "local_iterations": 1,
+        "message": "Optimization terminated successfully"
+      },
+      {
+        "run": 1,
+        "stage": 0,
+        "penalty_weight": 0.0,
+        "initialization": "random",
+        "loss": 6.735831163150916e-05,
+        "base_residual_norm": 0.005628905405068836,
+        "physical_penalty": 0.0038299969783447407,
+        "physical_feasible": false,
+        "solver_success": true,
+        "geometry_feasible": true,
+        "nominal_prior_penalty": 0.03499912900813408,
+        "local_iterations": 137,
+        "message": "Optimization terminated successfully"
+      },
+      {
+        "run": 1,
+        "stage": 1,
+        "penalty_weight": 10.0,
+        "initialization": "random",
+        "loss": 0.0006669214256133792,
+        "base_residual_norm": 0.020594531819829426,
+        "physical_penalty": 0.0,
+        "physical_feasible": true,
+        "solver_success": true,
+        "geometry_feasible": true,
+        "nominal_prior_penalty": 0.2381954781071721,
+        "local_iterations": 19,
+        "message": "Optimization terminated successfully"
+      },
+      {
+        "run": 1,
+        "stage": 2,
+        "penalty_weight": 20.0,
+        "initialization": "random",
+        "loss": 0.00014234890064433384,
+        "base_residual_norm": 0.009014241616616002,
+        "physical_penalty": 0.0,
+        "physical_feasible": true,
+        "solver_success": true,
+        "geometry_feasible": true,
+        "nominal_prior_penalty": 0.059937064622348074,
+        "local_iterations": 18,
+        "message": "Optimization terminated successfully"
+      },
+      {
+        "run": 1,
+        "stage": 3,
+        "penalty_weight": 30.0,
+        "initialization": "random",
+        "loss": 0.00014234699830897028,
+        "base_residual_norm": 0.009014147100034573,
+        "physical_penalty": 0.0,
+        "physical_feasible": true,
+        "solver_success": true,
+        "geometry_feasible": true,
+        "nominal_prior_penalty": 0.059936870019613245,
+        "local_iterations": 2,
+        "message": "Optimization terminated successfully"
+      },
+      {
+        "run": 1,
+        "stage": 4,
+        "penalty_weight": 40.0,
+        "initialization": "random",
+        "loss": 0.00014234697931851965,
+        "base_residual_norm": 0.00901414615616977,
+        "physical_penalty": 0.0,
+        "physical_feasible": true,
+        "solver_success": true,
+        "geometry_feasible": true,
+        "nominal_prior_penalty": 0.059936868082766694,
+        "local_iterations": 1,
+        "message": "Optimization terminated successfully"
+      },
+      {
+        "run": 2,
+        "stage": 0,
+        "penalty_weight": 0.0,
+        "initialization": "random",
+        "loss": 6.735721905599541e-05,
+        "base_residual_norm": 0.005628918919897245,
+        "physical_penalty": 0.0038295827925161115,
+        "physical_feasible": false,
+        "solver_success": true,
+        "geometry_feasible": true,
+        "nominal_prior_penalty": 0.03499790782333584,
+        "local_iterations": 132,
+        "message": "Optimization terminated successfully"
+      },
+      {
+        "run": 2,
+        "stage": 1,
+        "penalty_weight": 10.0,
+        "initialization": "random",
+        "loss": 0.0001830231929343229,
+        "base_residual_norm": 0.01018995958217193,
+        "physical_penalty": 0.0,
+        "physical_feasible": true,
+        "solver_success": true,
+        "geometry_feasible": true,
+        "nominal_prior_penalty": 0.07769043712938052,
+        "local_iterations": 52,
+        "message": "Optimization terminated successfully"
+      },
+      {
+        "run": 2,
+        "stage": 2,
+        "penalty_weight": 20.0,
+        "initialization": "random",
+        "loss": 0.0001041297488953741,
+        "base_residual_norm": 0.007267008089787205,
+        "physical_penalty": 0.0,
+        "physical_feasible": true,
+        "solver_success": true,
+        "geometry_feasible": true,
+        "nominal_prior_penalty": 0.05034985130450221,
+        "local_iterations": 28,
+        "message": "Optimization terminated successfully"
+      },
+      {
+        "run": 2,
+        "stage": 3,
+        "penalty_weight": 30.0,
+        "initialization": "random",
+        "loss": 0.00010412970926851703,
+        "base_residual_norm": 0.007267004844524635,
+        "physical_penalty": 0.0,
+        "physical_feasible": true,
+        "solver_success": true,
+        "geometry_feasible": true,
+        "nominal_prior_penalty": 0.05034985870175167,
+        "local_iterations": 1,
+        "message": "Optimization terminated successfully"
+      },
+      {
+        "run": 2,
+        "stage": 4,
+        "penalty_weight": 40.0,
+        "initialization": "random",
+        "loss": 0.00010412966964190992,
+        "base_residual_norm": 0.00726700159927575,
+        "physical_penalty": 0.0,
+        "physical_feasible": true,
+        "solver_success": true,
+        "geometry_feasible": true,
+        "nominal_prior_penalty": 0.05034986609903056,
+        "local_iterations": 1,
+        "message": "Optimization terminated successfully"
+      }
+    ],
+    "method": "two-step penalty continuation: dual_annealing + SLSQP",
+    "initial_source": "nominal first run, random subsequent runs",
+    "nominal_initial_clipped": false,
+    "uniqueness": "one feasible parameter set; individual link parameters are generally not uniquely identifiable",
+    "com_bound_contacts": [
+      {
+        "link": 2,
+        "component": "z",
+        "bound": "upper",
+        "value": 0.043999999765177204,
+        "bound_value": 0.04400000000000003
+      }
+    ]
+  },
+  "prior_source": "unperturbed repository MJCF (nominal model only)",
+  "nominal_parameters": [
+    0.06759999998147034,
+    0.00020000001253698703,
+    -0.0003000006340405626,
+    0.06759999999359284,
+    0.00010000064129205482,
+    0.0038000000249368586,
+    0.0,
+    0.0,
+    -0.36,
+    3.0,
+    0.0,
+    0.0,
+    0.0,
+    0.002680001114032043,
+    0.0004000121628934392,
+    -0.005959987569876369,
+    0.05929999927066905,
+    -0.00030000056076795,
+    0.058419999615299124,
+    0.30800000000000005,
+    0.0,
+    0.044000000000000004,
+    2.2,
+    0.0,
+    0.0,
+    0.0,
+    0.0010400000079682236,
+    -0.0011999997880220467,
+    -9.999979082119056e-05,
+    0.02009999998337363,
+    0.0001999999961978324,
+    0.020240000008658263,
+    0.13999999999999999,
+    0.013999999999999999,
+    0.0,
+    1.4,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "validation_rms_Nm": {
+    "measured_recovered": [
+      0.039669678622635776,
+      0.0278673787588379,
+      0.027325671269088008
+    ],
+    "truth_recovered": [
+      0.06518806987670997,
+      0.08583512183184708,
+      0.03288979906628397
+    ]
+  }
+}

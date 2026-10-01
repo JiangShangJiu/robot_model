@@ -1,0 +1,18 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+.venv/
+venv/
+build/
+dist/
+# 保留展示实验和符号导出；其他实验目录默认只留在本地。
+/outputs/*
+!/outputs/README.md
+!/outputs/showcase-fresh/
+!/outputs/showcase-prior/
+!/outputs/rrr_symbolic/
+!/outputs/franka_symbolic/
+.coverage
+htmlcov/

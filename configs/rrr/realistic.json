@@ -1,0 +1,85 @@
+{
+  "seed": 0,
+  "physics_dt": 0.001,
+  "control_dt": 0.004,
+  "kp": [
+    25.0,
+    35.0,
+    12.0
+  ],
+  "kd": [
+    1.2,
+    1.8,
+    0.4
+  ],
+  "mass_relative_error": 0.1,
+  "inertia_relative_error": 0.1,
+  "com_error_m": 0.003,
+  "damping": [
+    0.3,
+    0.25,
+    0.15
+  ],
+  "frictionloss": [
+    0.2,
+    0.15,
+    0.1
+  ],
+  "armature": [
+    0.05,
+    0.04,
+    0.02
+  ],
+  "low_speed_friction": 0.04,
+  "friction_velocity": 0.08,
+  "disturbance_amplitude": 0.02,
+  "disturbance_frequency_hz": 0.7,
+  "joint_lower": [
+    -2.5,
+    -1.8,
+    -2.2
+  ],
+  "joint_upper": [
+    2.5,
+    1.8,
+    2.2
+  ],
+  "velocity_limit": [
+    1.5,
+    1.5,
+    1.8
+  ],
+  "acceleration_limit": [
+    5.0,
+    5.0,
+    6.0
+  ],
+  "sensors": {
+    "encoder_bits": 17,
+    "encoder_span": 6.283185307179586,
+    "position_noise_std": 1e-05,
+    "position_bias": 0.0002,
+    "encoder_delay_steps": 1,
+    "velocity_cutoff_hz": 30.0,
+    "torque_noise_std": 0.02,
+    "torque_gain": 1.01,
+    "torque_bias": 0.01,
+    "torque_deadband": 0.005,
+    "torque_delay_steps": 2
+  },
+  "actuator": {
+    "torque_limit": [
+      15.0,
+      20.0,
+      8.0
+    ],
+    "time_constant_s": 0.008,
+    "slew_rate": [
+      300.0,
+      400.0,
+      200.0
+    ],
+    "gain": 0.99,
+    "delay_steps": 2
+  }
+}

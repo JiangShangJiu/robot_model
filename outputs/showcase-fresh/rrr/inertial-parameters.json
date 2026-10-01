@@ -1,0 +1,659 @@
+{
+  "success": true,
+  "full_parameters": [
+    0.1784072025928606,
+    -0.007411997822332296,
+    -0.07130485931946721,
+    0.20524918887619825,
+    -0.018452670614609857,
+    0.03115612059308356,
+    1.433845451990773e-05,
+    1.5864952118311265e-05,
+    0.00035529816977661175,
+    0.0010000708647481791,
+    1.5501927432915179e-06,
+    0.3074464169686248,
+    0.2016424138659253,
+    0.018320845009453295,
+    0.0036021731154100185,
+    -0.023701085699909516,
+    0.10385106998094809,
+    -0.000990365652692359,
+    0.09433517973218546,
+    0.3440168371730405,
+    -0.0015461833864773952,
+    -0.09684284193490991,
+    6.8735784685159,
+    0.017312346249153492,
+    0.223456250288932,
+    0.17426001062901572,
+    0.007263460107809889,
+    -0.0027612020280649552,
+    0.0053799066312274465,
+    0.023627769700312832,
+    0.0030250785064890365,
+    0.01982736373732724,
+    0.15371119550342702,
+    0.01116759671084618,
+    -0.02127252623695279,
+    1.4837575636675473,
+    0.025754247707168457,
+    0.14043178126075614,
+    0.10632186887326116
+  ],
+  "base_parameters": [
+    0.2765452447440971,
+    0.3074464169686248,
+    0.2016424138659253,
+    -0.2018568179630305,
+    0.0036021731154100185,
+    -0.0385173842449084,
+    -0.000990365652692359,
+    0.22797411897287467,
+    0.7594689549999538,
+    -0.0015461833864773952,
+    0.223456250288932,
+    0.17426001062901572,
+    -0.016364309592502943,
+    -0.0027612020280649552,
+    0.0053799066312274465,
+    0.0030250785064890365,
+    0.01982736373732724,
+    0.15371119550342702,
+    0.01116759671084618,
+    0.025754247707168457,
+    0.14043178126075614,
+    0.10632186887326116
+  ],
+  "parameter_names": [
+    "L_1xx",
+    "L_1xy",
+    "L_1xz",
+    "L_1yy",
+    "L_1yz",
+    "L_1zz",
+    "l_1x",
+    "l_1y",
+    "l_1z",
+    "m_1",
+    "Ia_1",
+    "fv_1",
+    "fc_1",
+    "L_2xx",
+    "L_2xy",
+    "L_2xz",
+    "L_2yy",
+    "L_2yz",
+    "L_2zz",
+    "l_2x",
+    "l_2y",
+    "l_2z",
+    "m_2",
+    "Ia_2",
+    "fv_2",
+    "fc_2",
+    "L_3xx",
+    "L_3xy",
+    "L_3xz",
+    "L_3yy",
+    "L_3yz",
+    "L_3zz",
+    "l_3x",
+    "l_3y",
+    "l_3z",
+    "m_3",
+    "Ia_3",
+    "fv_3",
+    "fc_3"
+  ],
+  "masses": [
+    0.0010000708647481791,
+    6.8735784685159,
+    1.4837575636675473
+  ],
+  "centers_of_mass": [
+    [
+      0.014337438500938826,
+      0.015863827932139696,
+      0.3552729934453964
+    ],
+    [
+      0.050049161255493524,
+      -0.00022494591333460656,
+      -0.014089144741490034
+    ],
+    [
+      0.10359589684145176,
+      0.007526564301544081,
+      -0.014336928591198839
+    ]
+  ],
+  "inertias_com": [
+    [
+      [
+        0.17828072306964785,
+        -0.0074117703595569795,
+        -0.07129976525380854
+      ],
+      [
+        -0.0074117703595569795,
+        0.20512275545514616,
+        -0.018447034225579917
+      ],
+      [
+        -0.07129976525380854,
+        -0.018447034225579917,
+        0.031155663337503126
+      ]
+    ],
+    [
+      [
+        0.016956064384621054,
+        0.0035247879337696464,
+        -0.028547988712350092
+      ],
+      [
+        0.0035247879337696464,
+        0.08526888300547154,
+        -0.0009685812511633918
+      ],
+      [
+        -0.028547988712350092,
+        -0.0009685812511633918,
+        0.07711707776627304
+      ]
+    ],
+    [
+      [
+        0.006874423783458396,
+        -0.0016042848312411984,
+        0.0031761601976270093
+      ],
+      [
+        -0.0016042848312411984,
+        0.0073989378579499875,
+        0.002864969469910328
+      ],
+      [
+        0.0031761601976270093,
+        0.002864969469910328,
+        0.003819460949840097
+      ]
+    ]
+  ],
+  "extras": {
+    "Ia_1": 1.5501927432915179e-06,
+    "fv_1": 0.3074464169686248,
+    "fc_1": 0.2016424138659253,
+    "Ia_2": 0.017312346249153492,
+    "fv_2": 0.223456250288932,
+    "fc_2": 0.17426001062901572,
+    "Ia_3": 0.025754247707168457,
+    "fv_3": 0.14043178126075614,
+    "fc_3": 0.10632186887326116
+  },
+  "links": [
+    {
+      "link": 1,
+      "mass": 0.0010000708647481791,
+      "center_of_mass": [
+        0.014337438500938826,
+        0.015863827932139696,
+        0.3552729934453964
+      ],
+      "inertia_com": [
+        [
+          0.17828072306964785,
+          -0.0074117703595569795,
+          -0.07129976525380854
+        ],
+        [
+          -0.0074117703595569795,
+          0.20512275545514616,
+          -0.018447034225579917
+        ],
+        [
+          -0.07129976525380854,
+          -0.018447034225579917,
+          0.031155663337503126
+        ]
+      ]
+    },
+    {
+      "link": 2,
+      "mass": 6.8735784685159,
+      "center_of_mass": [
+        0.050049161255493524,
+        -0.00022494591333460656,
+        -0.014089144741490034
+      ],
+      "inertia_com": [
+        [
+          0.016956064384621054,
+          0.0035247879337696464,
+          -0.028547988712350092
+        ],
+        [
+          0.0035247879337696464,
+          0.08526888300547154,
+          -0.0009685812511633918
+        ],
+        [
+          -0.028547988712350092,
+          -0.0009685812511633918,
+          0.07711707776627304
+        ]
+      ]
+    },
+    {
+      "link": 3,
+      "mass": 1.4837575636675473,
+      "center_of_mass": [
+        0.10359589684145176,
+        0.007526564301544081,
+        -0.014336928591198839
+      ],
+      "inertia_com": [
+        [
+          0.006874423783458396,
+          -0.0016042848312411984,
+          0.0031761601976270093
+        ],
+        [
+          -0.0016042848312411984,
+          0.0073989378579499875,
+          0.002864969469910328
+        ],
+        [
+          0.0031761601976270093,
+          0.002864969469910328,
+          0.003819460949840097
+        ]
+      ]
+    }
+  ],
+  "units": {
+    "mass": "kg",
+    "center_of_mass": "m",
+    "inertia_com": "kg*m^2"
+  },
+  "inertia_frame": "at center of mass, expressed in link coordinate axes",
+  "report": {
+    "success": true,
+    "solver_success": true,
+    "physical_feasible": true,
+    "total_mass": 8.358336103048195,
+    "max_bound_violation": 0.0,
+    "total_mass_violation": 0.0,
+    "inertia_eigenvalues": [
+      [
+        0.00034259370299377645,
+        0.20702921568393168,
+        0.2071873324753717
+      ],
+      [
+        0.005459264855171133,
+        0.08423736904091066,
+        0.08964539126028381
+      ],
+      [
+        0.0003057727250445964,
+        0.008740645461847283,
+        0.009046404404356601
+      ]
+    ],
+    "triangle_margins": [
+      9.223845577688294e-05,
+      2.562131789900224e-05,
+      6.891267638128862e-09
+    ],
+    "physical_penalty": 0.0,
+    "matches_base": true,
+    "base_error": 0.0038576506165741552,
+    "base_residual_norm": 0.0038946511885080016,
+    "base_residual": [
+      0.0005054757629927575,
+      -2.086968352604801e-05,
+      1.7861526662193983e-05,
+      0.0007176590944771022,
+      0.00017463281956624742,
+      -0.0001814510578092704,
+      0.0014480907490230575,
+      -1.1936337546425424e-05,
+      -9.363389194183558e-05,
+      -4.7927795410459845e-05,
+      2.1814408412063058e-05,
+      1.983200449531819e-05,
+      0.0016358620778527955,
+      -0.0008925370991326154,
+      0.0009930230549675583,
+      -0.002739886384078511,
+      0.0004907276575124436,
+      9.440203598684582e-05,
+      -8.995596256531138e-05,
+      1.6415895777582845e-06,
+      2.0115914271340296e-05,
+      -2.418319730265739e-05
+    ],
+    "target_base_parameters": [
+      0.2760397689811043,
+      0.30746728665215084,
+      0.2016245523392631,
+      -0.2025744770575076,
+      0.003427540295843771,
+      -0.03833593318709913,
+      -0.0024384564017154164,
+      0.2279860553104211,
+      0.7595625888918957,
+      -0.0014982555910669354,
+      0.22343443588051995,
+      0.1742401786245204,
+      -0.01800017167035574,
+      -0.0018686649289323398,
+      0.004386883576259888,
+      0.005764964890567548,
+      0.019336636079814798,
+      0.15361679346744017,
+      0.011257552673411492,
+      0.0257526061175907,
+      0.1404116653464848,
+      0.10634605207056382
+    ],
+    "base_error_definition": "norm(B*pi - target) / max(norm(target), 1)",
+    "iterations": 464,
+    "message": "Optimization terminated successfully",
+    "selected_run": 1,
+    "loss": 1.516830788014679e-05,
+    "config": {
+      "mass_lower": 0.001,
+      "mass_upper": 10.0,
+      "com_lower": [
+        -0.5,
+        -0.5,
+        -0.5
+      ],
+      "com_upper": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "inertia_diagonal_lower": 0.0,
+      "inertia_diagonal_upper": 1.0,
+      "inertia_offdiagonal_bound": 1.0,
+      "drive_inertia_upper": 1.0,
+      "friction_upper": 5.0,
+      "offset_bound": 5.0,
+      "total_mass_lower": null,
+      "total_mass_upper": null,
+      "runs": 3,
+      "penalty_weights": [
+        0.0,
+        10.0,
+        20.0,
+        30.0,
+        40.0
+      ],
+      "annealing_maxiter": 10,
+      "local_maxiter": 500,
+      "ftol": 1e-10,
+      "seed": 0,
+      "feasibility_tolerance": 1e-06,
+      "max_base_error": 0.05
+    },
+    "attempts": [
+      {
+        "run": 0,
+        "stage": 0,
+        "penalty_weight": 0.0,
+        "initialization": "nominal",
+        "loss": 1.2441418728048243e-11,
+        "base_residual_norm": 3.527239533693203e-06,
+        "physical_penalty": 0.005736606413691132,
+        "physical_feasible": false,
+        "solver_success": true,
+        "local_iterations": 20,
+        "message": "Optimization terminated successfully"
+      },
+      {
+        "run": 0,
+        "stage": 1,
+        "penalty_weight": 10.0,
+        "initialization": "nominal",
+        "loss": 0.00015911700611005215,
+        "base_residual_norm": 0.012614158953733386,
+        "physical_penalty": 0.0,
+        "physical_feasible": true,
+        "solver_success": true,
+        "local_iterations": 19,
+        "message": "Optimization terminated successfully"
+      },
+      {
+        "run": 0,
+        "stage": 2,
+        "penalty_weight": 20.0,
+        "initialization": "nominal",
+        "loss": 3.478432118114864e-05,
+        "base_residual_norm": 0.00589782342743055,
+        "physical_penalty": 0.0,
+        "physical_feasible": true,
+        "solver_success": true,
+        "local_iterations": 27,
+        "message": "Optimization terminated successfully"
+      },
+      {
+        "run": 0,
+        "stage": 3,
+        "penalty_weight": 30.0,
+        "initialization": "nominal",
+        "loss": 3.478432102260623e-05,
+        "base_residual_norm": 0.005897823413989794,
+        "physical_penalty": 0.0,
+        "physical_feasible": true,
+        "solver_success": true,
+        "local_iterations": 1,
+        "message": "Optimization terminated successfully"
+      },
+      {
+        "run": 0,
+        "stage": 4,
+        "penalty_weight": 40.0,
+        "initialization": "nominal",
+        "loss": 3.478432086406447e-05,
+        "base_residual_norm": 0.005897823400549093,
+        "physical_penalty": 0.0,
+        "physical_feasible": true,
+        "solver_success": true,
+        "local_iterations": 1,
+        "message": "Optimization terminated successfully"
+      },
+      {
+        "run": 1,
+        "stage": 0,
+        "penalty_weight": 0.0,
+        "initialization": "random",
+        "loss": 1.7983357861359096e-11,
+        "base_residual_norm": 4.240678938726568e-06,
+        "physical_penalty": 0.887243605051068,
+        "physical_feasible": false,
+        "solver_success": true,
+        "local_iterations": 28,
+        "message": "Optimization terminated successfully"
+      },
+      {
+        "run": 1,
+        "stage": 1,
+        "penalty_weight": 10.0,
+        "initialization": "random",
+        "loss": 1.5617408406172104e-05,
+        "base_residual_norm": 0.003951781718885073,
+        "physical_penalty": 8.296524578454978e-11,
+        "physical_feasible": true,
+        "solver_success": true,
+        "local_iterations": 190,
+        "message": "Optimization terminated successfully"
+      },
+      {
+        "run": 1,
+        "stage": 2,
+        "penalty_weight": 20.0,
+        "initialization": "random",
+        "loss": 1.5168349277365908e-05,
+        "base_residual_norm": 0.0038946565031291154,
+        "physical_penalty": 0.0,
+        "physical_feasible": true,
+        "solver_success": true,
+        "local_iterations": 13,
+        "message": "Optimization terminated successfully"
+      },
+      {
+        "run": 1,
+        "stage": 3,
+        "penalty_weight": 30.0,
+        "initialization": "random",
+        "loss": 1.5168328578736486e-05,
+        "base_residual_norm": 0.003894653845816915,
+        "physical_penalty": 0.0,
+        "physical_feasible": true,
+        "solver_success": true,
+        "local_iterations": 1,
+        "message": "Optimization terminated successfully"
+      },
+      {
+        "run": 1,
+        "stage": 4,
+        "penalty_weight": 40.0,
+        "initialization": "random",
+        "loss": 1.516830788014679e-05,
+        "base_residual_norm": 0.0038946511885080016,
+        "physical_penalty": 0.0,
+        "physical_feasible": true,
+        "solver_success": true,
+        "local_iterations": 1,
+        "message": "Optimization terminated successfully"
+      },
+      {
+        "run": 2,
+        "stage": 0,
+        "penalty_weight": 0.0,
+        "initialization": "random",
+        "loss": 2.346343748876336e-11,
+        "base_residual_norm": 4.843907254351941e-06,
+        "physical_penalty": 0.8923559088523877,
+        "physical_feasible": false,
+        "solver_success": true,
+        "local_iterations": 36,
+        "message": "Optimization terminated successfully"
+      },
+      {
+        "run": 2,
+        "stage": 1,
+        "penalty_weight": 10.0,
+        "initialization": "random",
+        "loss": 0.00010557236057911035,
+        "base_residual_norm": 0.010274841146174005,
+        "physical_penalty": 0.0,
+        "physical_feasible": true,
+        "solver_success": true,
+        "local_iterations": 120,
+        "message": "Optimization terminated successfully"
+      },
+      {
+        "run": 2,
+        "stage": 2,
+        "penalty_weight": 20.0,
+        "initialization": "random",
+        "loss": 0.00010557121739061664,
+        "base_residual_norm": 0.010274785515552947,
+        "physical_penalty": 0.0,
+        "physical_feasible": true,
+        "solver_success": true,
+        "local_iterations": 5,
+        "message": "Optimization terminated successfully"
+      },
+      {
+        "run": 2,
+        "stage": 3,
+        "penalty_weight": 30.0,
+        "initialization": "random",
+        "loss": 0.00010557120110073716,
+        "base_residual_norm": 0.010274784722841504,
+        "physical_penalty": 0.0,
+        "physical_feasible": true,
+        "solver_success": true,
+        "local_iterations": 1,
+        "message": "Optimization terminated successfully"
+      },
+      {
+        "run": 2,
+        "stage": 4,
+        "penalty_weight": 40.0,
+        "initialization": "random",
+        "loss": 0.00010557118481086032,
+        "base_residual_norm": 0.010274783930130128,
+        "physical_penalty": 0.0,
+        "physical_feasible": true,
+        "solver_success": true,
+        "local_iterations": 1,
+        "message": "Optimization terminated successfully"
+      }
+    ],
+    "method": "two-step penalty continuation: dual_annealing + SLSQP",
+    "initial_source": "nominal first run, random subsequent runs",
+    "nominal_initial_clipped": false,
+    "uniqueness": "one feasible parameter set; individual link parameters are generally not uniquely identifiable"
+  },
+  "prior_source": "source.nominal_model (unperturbed MJCF)",
+  "nominal_parameters": [
+    0.06759999998147034,
+    0.00020000001253698703,
+    -0.0003000006340405626,
+    0.06759999999359284,
+    0.00010000064129205482,
+    0.0038000000249368586,
+    0.0,
+    0.0,
+    -0.36,
+    3.0,
+    0.0,
+    0.0,
+    0.0,
+    0.002680001114032043,
+    0.0004000121628934392,
+    -0.005959987569876369,
+    0.05929999927066905,
+    -0.00030000056076795,
+    0.058419999615299124,
+    0.30800000000000005,
+    0.0,
+    0.044000000000000004,
+    2.2,
+    0.0,
+    0.0,
+    0.0,
+    0.0010400000079682236,
+    -0.0011999997880220467,
+    -9.999979082119056e-05,
+    0.02009999998337363,
+    0.0001999999961978324,
+    0.020240000008658263,
+    0.13999999999999999,
+    0.013999999999999999,
+    0.0,
+    1.4,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "validation_rms_Nm": {
+    "measured_recovered": [
+      0.04590864085616531,
+      0.022769747481656444,
+      0.02906113455061452
+    ],
+    "truth_recovered": [
+      0.06733846252565226,
+      0.07721799167381646,
+      0.03441073939125034
+    ]
+  }
+}
