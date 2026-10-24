@@ -78,11 +78,14 @@ class NumericDynamics:
             ]
         self.dynparms = list(self.symbols.dynparms())
         self.n_dynparms = len(self.dynparms)
+        self._stribeck_velocity = np.asarray(
+            self.symbols.stribeck_velocity, dtype=float
+        )
         self._parm_slots = self._build_parm_slots()
         self._rigid_groups = self._build_rigid_groups()
 
     def _build_parm_slots(self):
-        """每个 dynparm → 写入 (m,l,Le,Ia,fv,fc,fo) 的位置。"""
+        """每个 dynparm → 写入 (m,l,Le,Ia,fv,fc,fs,fo) 的位置。"""
         sym = self.symbols
         slots = []
         for parm in self.dynparms:
@@ -111,6 +114,9 @@ class NumericDynamics:
                     break
                 if sym.fc is not None and parm == sym.fc[i]:
                     kind = ("fc", i, None)
+                    break
+                if sym.fs is not None and parm == sym.fs[i]:
+                    kind = ("fs", i, None)
                     break
                 if sym.fo is not None and parm == sym.fo[i]:
                     kind = ("fo", i, None)
@@ -159,6 +165,7 @@ class NumericDynamics:
         Ia = np.zeros(n)
         fv = np.zeros(n)
         fc = np.zeros(n)
+        fs = np.zeros(n)
         fo = np.zeros(n)
         kind, i, j = self._parm_slots[col]
         if kind == "m":
@@ -173,9 +180,11 @@ class NumericDynamics:
             fv[i] = 1.0
         elif kind == "fc":
             fc[i] = 1.0
+        elif kind == "fs":
+            fs[i] = 1.0
         elif kind == "fo":
             fo[i] = 1.0
-        return m, l, Le, Ia, fv, fc, fo
+        return m, l, Le, Ia, fv, fc, fs, fo
 
     def _park_forward(self, q, dq, ddq):
         g = _gravity_vec(self.symbols)
@@ -200,7 +209,16 @@ class NumericDynamics:
             )
         return Tinv, S, V, dV, dq, ddq
 
-    def _park_backward(self, Tinv, S, V, dV, dq, ddq, m, l, Le, Ia, fv, fc, fo):
+    def _joint_friction(self, i, dq_i, fv, fc, fs, fo):
+        fric = fv[i] * dq_i + fo[i]
+        if fc[i] != 0.0:
+            fric += fc[i] * np.sign(dq_i)
+        if fs[i] != 0.0:
+            scaled = dq_i / self._stribeck_velocity[i]
+            fric += fs[i] * np.exp(-(scaled**2)) * np.sign(dq_i)
+        return fric
+
+    def _park_backward(self, Tinv, S, V, dV, dq, ddq, m, l, Le, Ia, fv, fc, fs, fo):
         n = self.dof
         F = [None] * (n + 1)
         F[n] = np.zeros(6)
@@ -215,21 +233,22 @@ class NumericDynamics:
                 + Llm @ dV[i]
                 - _adjdual(V[i], Llm @ V[i])
             )
-            fric = fv[i] * dq[i] + fo[i]
-            if fc[i] != 0.0:
-                fric += fc[i] * np.sign(dq[i])
+            fric = self._joint_friction(i, dq[i], fv, fc, fs, fo)
             tau[i] = float(S[i] @ F[i]) + fric + Ia[i] * ddq[i]
         return tau
 
-    def invdyn_park(self, q, dq, ddq, m, l, Le, Ia=None, fv=None, fc=None, fo=None):
+    def invdyn_park(
+        self, q, dq, ddq, m, l, Le, Ia=None, fv=None, fc=None, fo=None, fs=None
+    ):
         n = self.dof
         Ia = np.zeros(n) if Ia is None else np.asarray(Ia, float).reshape(-1)
         fv = np.zeros(n) if fv is None else np.asarray(fv, float).reshape(-1)
         fc = np.zeros(n) if fc is None else np.asarray(fc, float).reshape(-1)
+        fs = np.zeros(n) if fs is None else np.asarray(fs, float).reshape(-1)
         fo = np.zeros(n) if fo is None else np.asarray(fo, float).reshape(-1)
         Tinv, S, V, dV, dq, ddq = self._park_forward(q, dq, ddq)
         return self._park_backward(
-            Tinv, S, V, dV, dq, ddq, m, l, Le, Ia, fv, fc, fo
+            Tinv, S, V, dV, dq, ddq, m, l, Le, Ia, fv, fc, fs, fo
         )
 
     def _khalil_forward(self, q, dq, ddq):
@@ -281,7 +300,8 @@ class NumericDynamics:
         return Rdh, pdh, w, dw, dV, U, dq, ddq, sigma, conv, z
 
     def _khalil_backward(
-        self, Rdh, pdh, w, dw, dV, U, dq, ddq, sigma, conv, z, m, l, Le, Ia, fv, fc, fo
+        self, Rdh, pdh, w, dw, dV, U, dq, ddq, sigma, conv, z,
+        m, l, Le, Ia, fv, fc, fs, fo,
     ):
         n = self.dof
         Rdh_e = Rdh + [np.eye(3)]
@@ -312,28 +332,28 @@ class NumericDynamics:
                 fim1 = Rdh[i] @ f[i]
                 mim1 = Rdh[i] @ mm[i] + np.cross(pdh[i], fim1)
                 tau[i] = float((s * fim1 + ns * mim1) @ z)
-            fric = fv[i] * dq[i] + fo[i]
-            if fc[i] != 0.0:
-                fric += fc[i] * np.sign(dq[i])
+            fric = self._joint_friction(i, dq[i], fv, fc, fs, fo)
             tau[i] += fric + Ia[i] * ddq[i]
         return tau
 
-    def invdyn_khalil(self, q, dq, ddq, m, l, Le, Ia=None, fv=None, fc=None, fo=None):
+    def invdyn_khalil(
+        self, q, dq, ddq, m, l, Le, Ia=None, fv=None, fc=None, fo=None, fs=None
+    ):
         n = self.dof
         Ia = np.zeros(n) if Ia is None else np.asarray(Ia, float).reshape(-1)
         fv = np.zeros(n) if fv is None else np.asarray(fv, float).reshape(-1)
         fc = np.zeros(n) if fc is None else np.asarray(fc, float).reshape(-1)
+        fs = np.zeros(n) if fs is None else np.asarray(fs, float).reshape(-1)
         fo = np.zeros(n) if fo is None else np.asarray(fo, float).reshape(-1)
         state = self._khalil_forward(q, dq, ddq)
-        return self._khalil_backward(*state, m, l, Le, Ia, fv, fc, fo)
+        return self._khalil_backward(*state, m, l, Le, Ia, fv, fc, fs, fo)
 
-    def invdyn(self, q, dq, ddq, m, l, Le, Ia=None, fv=None, fc=None, fo=None):
+    def invdyn(self, q, dq, ddq, m, l, Le, Ia=None, fv=None, fc=None, fo=None, fs=None):
         if self.method == "park":
-            return self.invdyn_park(q, dq, ddq, m, l, Le, Ia, fv, fc, fo)
-        return self.invdyn_khalil(q, dq, ddq, m, l, Le, Ia, fv, fc, fo)
+            return self.invdyn_park(q, dq, ddq, m, l, Le, Ia, fv, fc, fo, fs)
+        return self.invdyn_khalil(q, dq, ddq, m, l, Le, Ia, fv, fc, fo, fs)
 
-    @staticmethod
-    def _actuator_column(kind: str, joint: int, dq, ddq, dof: int) -> np.ndarray:
+    def _actuator_column(self, kind: str, joint: int, dq, ddq, dof: int) -> np.ndarray:
         """电机惯量/摩擦列不依赖刚体力递推，直接写对应分量。"""
         tau = np.zeros(dof)
         if kind == "Ia":
@@ -342,6 +362,9 @@ class NumericDynamics:
             tau[joint] = float(dq[joint])
         elif kind == "fc":
             tau[joint] = float(np.sign(dq[joint]))
+        elif kind == "fs":
+            scaled = dq[joint] / self._stribeck_velocity[joint]
+            tau[joint] = float(np.exp(-(scaled**2)) * np.sign(dq[joint]))
         elif kind == "fo":
             tau[joint] = 1.0
         else:
@@ -352,7 +375,7 @@ class NumericDynamics:
         """数值 ``H(q,dq,ddq)``，形状 ``(dof, n_dynparms)``。
 
         正向递推只算一次；每连杆的 10 个刚体参数列合批向根传播，
-        跳过其下游的零力。``Ia/fv/fc/fo`` 列直接写入对应关节。
+        跳过其下游的零力。``Ia/fv/fc/fs/fo`` 列直接写入对应关节。
         """
         H = np.zeros((self.dof, self.n_dynparms))
         if self.method == "park":
@@ -364,7 +387,7 @@ class NumericDynamics:
             self._khalil_regressor(H, *state)
             dq_a, ddq_a = state[6], state[7]
         for c, (kind, joint, _) in enumerate(self._parm_slots):
-            if kind in ("Ia", "fv", "fc", "fo"):
+            if kind in ("Ia", "fv", "fc", "fs", "fo"):
                 H[:, c] = self._actuator_column(kind, joint, dq_a, ddq_a, self.dof)
         return H
 

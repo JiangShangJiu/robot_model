@@ -43,6 +43,7 @@ def regressor(
                 tmp.Ia[i] = 1 if symbols.Ia[i] == parm else 0
                 tmp.fv[i] = 1 if symbols.fv[i] == parm else 0
                 tmp.fc[i] = 1 if symbols.fc[i] == parm else 0
+                tmp.fs[i] = 1 if symbols.fs[i] == parm else 0
                 tmp.fo[i] = 1 if symbols.fo[i] == parm else 0
             Y[:, p] = lag_mod.inverse_dynamics_lagrange(
                 tmp, frames, ifunc, kinematics=kinematics
@@ -60,6 +61,7 @@ def regressor(
             tmp.Ia[i] = 1 if symbols.Ia[i] == parm else 0
             tmp.fv[i] = 1 if symbols.fv[i] == parm else 0
             tmp.fc[i] = 1 if symbols.fc[i] == parm else 0
+            tmp.fs[i] = 1 if symbols.fs[i] == parm else 0
             tmp.fo[i] = 1 if symbols.fo[i] == parm else 0
         Y[:, p] = rne_backward(tmp, frames, fw, ifunc, method=m)
     return Y
