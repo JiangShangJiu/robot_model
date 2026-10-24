@@ -1,0 +1,117 @@
+{
+  "demo": "hardware_id_closed_loop",
+  "settings": {
+    "seed": 0,
+    "trials": 8,
+    "periods": 2,
+    "payload_mass_kg": 0.6,
+    "payload_offset_m": [
+      0.22,
+      0.0,
+      0.0
+    ],
+    "base_parms_samples": 400,
+    "feedback_scale": 0.4,
+    "friction_plant": "viscous+Coulomb+Stribeck peak",
+    "trajectory_condition_number": {
+      "train": 73.95375,
+      "heldout": 83.6666
+    },
+    "control_feedback_gains": {
+      "kp": [
+        10.0,
+        14.0,
+        4.8
+      ],
+      "kd": [
+        0.48,
+        0.72,
+        0.16
+      ]
+    }
+  },
+  "identification": {
+    "coulomb_viscous": {
+      "train_samples": 1530,
+      "rank": 22,
+      "n_parms": 22,
+      "condition_number": 90.16172,
+      "train_residual_rms_Nm": 0.01812,
+      "heldout_valid_samples": 1507,
+      "open_loop_rmse_Nm": {
+        "identified_valid": [
+          0.04175,
+          0.02655,
+          0.02605
+        ],
+        "nominal_valid": [
+          0.60452,
+          3.07629,
+          1.14202
+        ],
+        "identified_full": [
+          0.06978,
+          0.04228,
+          0.04819
+        ],
+        "nominal_full": [
+          0.66189,
+          3.06972,
+          1.12073
+        ]
+      }
+    },
+    "stribeck": {
+      "train_samples": 2109,
+      "rank": 25,
+      "n_parms": 25,
+      "condition_number": 98.99231,
+      "train_residual_rms_Nm": 0.02535,
+      "heldout_valid_samples": 1918,
+      "open_loop_rmse_Nm": {
+        "identified_valid": [
+          0.04362,
+          0.03887,
+          0.02845
+        ],
+        "nominal_valid": [
+          0.62247,
+          3.05275,
+          1.11388
+        ],
+        "identified_full": [
+          0.05403,
+          0.04904,
+          0.05277
+        ],
+        "nominal_full": [
+          0.66189,
+          3.06972,
+          1.12073
+        ]
+      }
+    }
+  },
+  "tracking_rms_rad": {
+    "before_id_nominal": [
+      0.10747,
+      0.23267,
+      0.23198
+    ],
+    "after_id_identified": [
+      0.01477,
+      0.01052,
+      0.00945
+    ],
+    "improvement_percent": [
+      86.2563,
+      95.4806,
+      95.92613
+    ]
+  },
+  "notes": [
+    "对象含 Stribeck 低速摩擦峰与末端负载失配；名义前馈两者皆未建模。",
+    "coulomb_viscous 剔除 |dq|<0.08 rad/s 样本，stribeck 剔除 |dq|<0.02。",
+    "full 指含低速段的整段保留数据；低速区是摩擦模型的主要失配区。"
+  ]
+}

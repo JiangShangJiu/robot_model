@@ -1,0 +1,92 @@
+{
+  "demo": "vla_low_level_bridge",
+  "settings": {
+    "seed": 0,
+    "dt": 0.001,
+    "duration_s": 20.0,
+    "circle_center": [
+      0.4,
+      0.05,
+      0.3
+    ],
+    "circle_radius_m": 0.06,
+    "circle_period_s": 8.0,
+    "chunk_period_s": 0.5,
+    "action_dt_s": 0.1,
+    "chunk_len": 8,
+    "convergence_decay": 0.5,
+    "latency_s": 0.25,
+    "dropout_prob": 0.15,
+    "silence_window_s": [
+      12.0,
+      14.5
+    ],
+    "setpoint_speed_max_m_s": 0.25,
+    "workspace_lower": [
+      0.3,
+      -0.1,
+      0.15
+    ],
+    "workspace_upper": [
+      0.52,
+      0.2,
+      0.45
+    ],
+    "hold_timeout_s": 0.8,
+    "gains": {
+      "kp": [
+        800.0,
+        800.0,
+        800.0
+      ],
+      "kd": [
+        80.0,
+        80.0,
+        80.0
+      ]
+    },
+    "torque_limit": [
+      15.0,
+      20.0,
+      8.0
+    ],
+    "eval_start_s": 2.0
+  },
+  "scenarios": {
+    "ideal_link": {
+      "tracking_rmse_m": 0.00286,
+      "tracking_max_m": 0.00401,
+      "ee_speed_max_m_s": 0.16181,
+      "dropped_chunks": 0,
+      "hold_fraction": 0.0,
+      "speed_clamp_events": 0,
+      "outside_workspace_fraction": 0.0,
+      "max_data_age_s": 0.499
+    },
+    "degraded_naive": {
+      "tracking_rmse_m": 0.0215,
+      "tracking_max_m": 0.09265,
+      "ee_speed_max_m_s": 1.5527,
+      "dropped_chunks": 10,
+      "hold_fraction": 0.0,
+      "speed_clamp_events": 0,
+      "outside_workspace_fraction": 0.0,
+      "max_data_age_s": 2.999
+    },
+    "degraded_guarded": {
+      "tracking_rmse_m": 0.02426,
+      "tracking_max_m": 0.09847,
+      "ee_speed_max_m_s": 0.24039,
+      "dropped_chunks": 10,
+      "hold_fraction": 0.26078,
+      "speed_clamp_events": 1006,
+      "outside_workspace_fraction": 0.0,
+      "max_data_age_s": 2.999
+    }
+  },
+  "notes": [
+    "VLA 桩只定义动作块接口与时序（2 Hz、8 步块、观测收敛），无学习成分。",
+    "退化链路：250 ms 延迟 + 15% 随机丢块 + 12–14.5 s 强制沉默。",
+    "护栏不恢复精度——它把无界漂移变成有界保持，并限制设定点速度与工作空间。"
+  ]
+}

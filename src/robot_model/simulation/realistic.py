@@ -107,11 +107,18 @@ class RealisticMujocoSource:
 
     nominal_model 被复制，调用方的模型不变。对象惯性被随机扰动，摩擦、
     armature、限位在对象中启用；前馈只用未扰动的名义模型。
+
+    ``plant_model`` 给定时作为对象侧的基础模型（仍施加扰动与摩擦），
+    用于构造名义模型没有的结构性失配，例如额外负载；None 则沿用名义模型。
     """
 
-    def __init__(self, nominal_model, config=None):
+    def __init__(self, nominal_model, config=None, *, plant_model=None):
         self.mujoco = mj = _require_mujoco()
         _validate_motor_model(nominal_model)
+        if plant_model is not None:
+            _validate_motor_model(plant_model)
+            if plant_model.nv != nominal_model.nv:
+                raise ValueError("plant_model 自由度必须与名义模型一致")
         self.config = c = config or RealismConfig()
         self.dof = n = nominal_model.nv
         integer(c.seed, "seed")
@@ -135,7 +142,7 @@ class RealisticMujocoSource:
         self.velocity_limit = vector(c.velocity_limit, n, "velocity_limit", positive=True)
         self.acceleration_limit = vector(c.acceleration_limit, n, "acceleration_limit", positive=True)
         self.nominal_model = deepcopy(nominal_model)
-        self.model = deepcopy(nominal_model)
+        self.model = deepcopy(nominal_model if plant_model is None else plant_model)
         self.model.opt.timestep = c.physics_dt
         self.model.opt.integrator = mj.mjtIntegrator.mjINT_IMPLICITFAST
         rng = np.random.default_rng(c.seed)

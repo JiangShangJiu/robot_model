@@ -1,0 +1,72 @@
+<mujoco model="rrr_arm_contact">
+  <!-- 演示 2 / 演示 3 用接触场景：rrr_arm.xml 的拷贝，加上
+         1) 工具端可碰撞小球（tool_tip）
+         2) x = 0.46 处的竖直刚性墙（法线 -x，工具沿 +x 推压）
+         3) 少量关节阻尼，接近真实关节而不掩盖受迫振荡
+       接触力由 mj_contactForce 读取（相当于理想腕部力传感器，
+       测量噪声与延迟在控制代码中叠加）。
+       惯性、执行器与 MDH 帧对应关系与 rrr_arm.xml 完全一致；
+       如果修改连杆尺寸或惯性，必须同步两个文件。 -->
+  <compiler angle="radian" inertiafromgeom="false" autolimits="true"/>
+
+  <option gravity="0 0 -9.81" integrator="implicitfast"/>
+
+  <visual>
+    <global offwidth="1280" offheight="960"/>
+  </visual>
+
+  <default>
+    <joint axis="0 0 1" damping="0.1" armature="0" frictionloss="0" limited="false"/>
+    <geom type="capsule" contype="0" conaffinity="0" density="0" rgba="0.7 0.7 0.75 1"/>
+  </default>
+
+  <worldbody>
+    <light name="top" pos="0 0 2"/>
+    <geom name="ground" type="plane" size="1 1 0.05" rgba="0.3 0.3 0.35 1"/>
+
+    <!-- 刚性墙：表面在 x = 0.46，solref 取较硬接触以放大失稳回弹。
+         condim=1（无切向摩擦）：隔离法向力环的失稳机理，避免横向滑动的
+         粘滑颤振混入对照；真实抛光任务的摩擦问题在文档的失败分析中说明。 -->
+    <geom name="wall" type="box" pos="0.47 0.05 0.30" size="0.01 0.35 0.35"
+      contype="1" conaffinity="1" condim="1" solref="0.002 1" rgba="0.55 0.6 0.7 0.6"/>
+
+    <body name="base">
+      <geom name="base_geom" fromto="0 0 0 0 0 0.06" size="0.07" rgba="0.35 0.35 0.4 1"/>
+
+      <body name="link1" pos="0 0 0.30">
+        <inertial mass="3.0" pos="0 0 -0.12"
+          fullinertia="0.0244 0.0244 0.0038 0.0002 -0.0003 0.0001"/>
+        <joint name="joint1"/>
+        <geom name="link1_geom" fromto="0 0 -0.30 0 0 0" size="0.05"/>
+
+        <body name="link2" quat="1 -1 0 0">
+          <inertial mass="2.2" pos="0.14 0 0.02"
+            fullinertia="0.0018 0.0153 0.0153 0.0004 0.0002 -0.0003"/>
+          <joint name="joint2"/>
+          <geom name="link2_geom" fromto="0 0 0 0.28 0 0" size="0.04"/>
+
+          <body name="link3" pos="0.28 0 0.05">
+            <inertial mass="1.4" pos="0.10 0.01 0"
+              fullinertia="0.0009 0.0061 0.0061 0.0002 -0.0001 0.0002"/>
+            <joint name="joint3"/>
+            <geom name="link3_geom" fromto="0 0 0 0.22 0 0" size="0.035"
+              rgba="0.8 0.55 0.2 1"/>
+            <geom name="tool_tip" type="sphere" pos="0.22 0 0" size="0.012"
+              contype="1" conaffinity="1" rgba="1 0.3 0.3 1"/>
+            <site name="tool" pos="0.22 0 0" size="0.012" rgba="1 0 0 1"/>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+
+  <actuator>
+    <motor name="motor1" joint="joint1" gear="1"/>
+    <motor name="motor2" joint="joint2" gear="1"/>
+    <motor name="motor3" joint="joint3" gear="1"/>
+  </actuator>
+
+  <keyframe>
+    <key name="home" qpos="0 -0.6 1.2"/>
+  </keyframe>
+</mujoco>

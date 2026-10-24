@@ -30,6 +30,49 @@ RRR 和 Franka 均采用 MuJoCo 闭环采集，用独立轨迹验证辨识结果
 
 Franka 的[数值回归基准](scripts/README.md#数值回归基准)：在同一批 2255 个训练样本上，回归矩阵求值 56.4 s → 1.9 s（约 29 倍），62 个辨识参数逐项不变。
 
+## 仿真演示：辨识 → 接触力控 → VLA 桥接
+
+三个端到端演示，回答"辨识换来多少控制性能、力控失稳如何拦住、
+学习策略怎么安全接到力矩环"。全部确定种子、一条命令复现，产物
+（指标 JSON + 图）在 [artifacts/](artifacts/README.md)，完整叙述
+（问题 → 方法 → 指标 → 失败分析）见[演示文档](docs/demos.md)。
+
+### 演示 1：仿真"实机"辨识闭环
+
+```bash
+robot-demo-hardware-id --output-dir artifacts/hardware_id
+```
+
+带噪声/延迟/Stribeck 摩擦/未知 0.6 kg 末端负载的对象上闭环采集并辨识，
+再在独立保留轨迹上对照：开环力矩预测总体 RMSE 从名义模型的 1.93 N·m
+降到 0.032 N·m（约 98%）；同一对象、同一弱反馈增益下，仅把前馈换成
+辨识参数，跟踪 RMS 从 0.11–0.23 rad 降到 0.009–0.015 rad（86–96%）。
+失败注记：|dq|<0.08 rad/s 的低速区两种摩擦模型的残差都明显抬升。
+[详细文档](docs/demos.md#演示-1仿真实机辨识闭环辨识前后各差多少)
+
+### 演示 2：接触力控失稳回放（能量罐护栏）
+
+```bash
+robot-demo-contact --output-dir artifacts/contact_safety
+```
+
+刚性墙上跟踪 15 N 法向力：30 ms 力测量延迟 + 故意调高的导纳积分增益
+造成接触弹跳极限环（RMSE 33.6 N、峰值 279 N、73 次弹开）；同一组增益
+加能量罐护栏后 RMSE 1.31 N、峰值 44 N、1 次弹开，护栏介入时间 43%。
+[详细文档](docs/demos.md#演示-2接触力控失稳回放能量罐拦住接触弹跳)
+
+### 演示 3：VLA 动作块 → 底层控制桥接
+
+```bash
+robot-demo-vla --output-dir artifacts/vla_bridge
+```
+
+2 Hz 动作块桩（接口对齐 ACT/π0 类策略）驱动 1 kHz 阻抗环；250 ms 延迟
++15% 丢块 + 2.5 s 强制沉默下，裸桥接在数据恢复瞬间末端冲到 1.55 m/s，
+护栏（速度钳位 + 工作空间盒 + 超时保持）把全程速度压在 0.24 m/s 内、
+零越界——护栏不恢复精度（RMSE 21.5 vs 24.3 mm），它保证降级是有界且
+可预期的。[详细文档](docs/demos.md#演示-3vla--底层控制桥接延迟与丢包下护栏的价值)
+
 ## 从哪里开始
 
 算法与模块关系见[工程原理](docs/principles.md)。
@@ -318,6 +361,7 @@ robot_model/
 │   ├── data/                # MotionData、对齐、滤波、周期平均
 │   ├── identification/      # 基参数估计、完整惯性参数恢复、力矩预测和分解
 │   ├── experiments/         # 将上述模块连接成实验流程
+│   ├── demos/               # 端到端演示：辨识闭环、接触力控护栏、VLA 桥接
 │   ├── cli/                 # 参数解析与命令行入口
 │   ├── assets/models/       # 随包分发的 MJCF、网格、许可信息
 │   └── utils/               # 数学、符号和通用校验
@@ -326,7 +370,8 @@ robot_model/
 ├── scripts/                # 几何先验复查、Franka 历史调参脚本
 ├── notebooks/              # RRR / Franka 的交互式实验与推导
 ├── tests/                  # 按机器人和功能组织的自动化测试
-├── docs/                   # 工程原理与接口说明、展示图表
+├── docs/                   # 工程原理与接口说明、展示图表、演示文档
+├── artifacts/              # 三个仿真演示的指标与图表，纳入 Git
 └── outputs/                # 展示实验与符号导出纳入 Git，其他实验默认忽略
 ```
 
@@ -395,6 +440,7 @@ GUI 查看器需要桌面环境，不属于上述自动化测试。
 ## 文档
 
 - [工程原理：建模、激励、辨识与惯性参数恢复](docs/principles.md)
+- [仿真演示：辨识闭环、接触力控护栏、VLA 桥接](docs/demos.md)
 - [建模接口、坐标约定与公式导出](docs/principles.md#建模接口与公式导出)
 - [辨识接口与实验选项](docs/principles.md#辨识接口与实验选项)
 - [Notebook 入口](notebooks/README.md)

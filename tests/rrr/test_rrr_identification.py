@@ -202,7 +202,12 @@ class TestDecomposition:
         d.qpos[:] = q
         mujoco.mj_forward(ref.model, d)
         M_mj = np.zeros((ref.model.nv, ref.model.nv))
-        mujoco.mj_fullM(ref.model, M_mj, d.qM)
+        try:
+            # MuJoCo 新 API：mj_fullM(model, data, dst)
+            mujoco.mj_fullM(ref.model, d, M_mj)
+        except TypeError:
+            # 旧 API：mj_fullM(model, dst, 稀疏 qM)
+            mujoco.mj_fullM(ref.model, M_mj, d.qM)
 
         assert np.allclose(dec.inertia(q), M_mj, atol=1e-9)
 
