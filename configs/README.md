@@ -22,6 +22,8 @@ robot-identify --robot franka \
 - `franka/screening.json`：使用 `ExcitationCriteria()` 默认值，当前七轴仿真实验沿用这组门槛。
 - `franka/recovery.json`：启用同样的名义软先验与惯性包络；质量取各连杆名义值的 0.5～2 倍、总质量取名义值 ±30%，质心取各连杆 mesh 包围盒加 10% 裕量。
 
+两套 `realistic.json` 的 `low_speed_friction` / `friction_velocity` 定义仿真对象的高斯低速摩擦峰（Stribeck 效应）。辨识模型的摩擦项由 CLI 的 `--friction-model` 选择，不在这些文件中：默认 `coulomb_viscous` 把该峰留作未建模失配；`stribeck` 显式建模该峰，特征速度 v_s 直接取 `friction_velocity`，低速剔除阈值默认从 0.08 降到 0.02 rad/s（可用 `--min-speed` 覆盖）。
+
 ## Franka 的配置假设
 
 闭环采集使用 `panda_arm_motor.xml`（每关节一个 `gear=1` 的力矩 motor）；`panda_arm.xml` 是 position servo，只用于运动学与逆动力学对照，采集器会拒收。两者几何与惯性一致。

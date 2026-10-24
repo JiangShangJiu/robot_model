@@ -89,10 +89,11 @@ def saved_run(tmp_path, monkeypatch):
     dynamics.gen_base_regressor = lambda: events.append('base_regressor')
     robot = SimpleNamespace(dynamics=dynamics)
 
-    def make_robot(name, parms, **kwargs):
-        assert name == setup.name and parms == setup.mdh_parms
-        assert kwargs == {'frictionmodel': {'viscous', 'Coulomb'},
-                          'driveinertiamodel': 'simplified'}
+    def make_robot(actual_setup, friction_model, *, stribeck_velocity=None):
+        # 旧报告没有 friction_model 字段，必须回落到 coulomb_viscous。
+        assert actual_setup is setup
+        assert friction_model == 'coulomb_viscous'
+        assert stribeck_velocity is None
         return robot
 
     def load_setup(module_name):
@@ -139,7 +140,7 @@ def saved_run(tmp_path, monkeypatch):
         events.append(('read_npz', Path(path).name))
         return original_load(path, *args, **kwargs)
 
-    monkeypatch.setattr(cli, 'Robot', SimpleNamespace(from_mdh=make_robot))
+    monkeypatch.setattr(cli, 'identification_robot', make_robot)
     monkeypatch.setattr(cli, 'import_module', load_setup)
     monkeypatch.setattr(cli, 'nominal_recovery_parameters', pack_nominal)
     monkeypatch.setattr(cli, 'recover_inertial_parameters', solve)

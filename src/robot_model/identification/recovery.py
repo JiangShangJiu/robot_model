@@ -182,7 +182,7 @@ class _Layout:
         self.inertia = np.array([[pos[str(p)] for p in L] for L in s.Le])
         used = set(self.mass) | set(self.first.ravel()) | set(self.inertia.ravel())
         self.extra = np.array([i for i in range(len(self.names)) if i not in used], dtype=int)
-        known_extras = {str(p): kind for kind in ('Ia', 'fv', 'fc', 'fo') for p in getattr(s, kind)}
+        known_extras = {str(p): kind for kind in ('Ia', 'fv', 'fc', 'fs', 'fo') for p in getattr(s, kind)}
         try:
             self.extra_kinds = [known_extras[self.names[i]] for i in self.extra]
         except KeyError as exc:
@@ -273,6 +273,7 @@ def _bounds(layout, config):
     iu[:, [0, 3, 5]] = config.inertia_diagonal_upper
     el, eu = [], []
     for kind in layout.extra_kinds:
+        # 摩擦项 fv/fc/fs 非负；fs 与 fc/fv 共用 friction_upper。
         el.append(-config.offset_bound if kind == 'fo' else 0.0)
         eu.append(config.offset_bound if kind == 'fo' else config.drive_inertia_upper if kind == 'Ia' else config.friction_upper)
     return (np.concatenate((ml, cl.ravel(), il.ravel(), el)),

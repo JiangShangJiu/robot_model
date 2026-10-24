@@ -33,7 +33,10 @@ class RealismConfig:
     damping: float = 0.20
     frictionloss: float = 0.15
     armature: float = 0.04
-    # 额外平滑低速摩擦峰：仅用于制造 sign(dq) 模型之外的失配，非完整静摩擦模型。
+    # 高斯型低速摩擦峰（Stribeck 效应）：幅值 low_speed_friction，特征速度
+    # friction_velocity，作用为 low_speed_friction*exp(-(dq/v_s)^2)*tanh(dq/0.005)。
+    # 辨识模型选 "stribeck" 时会显式建模该项（sign 代替 tanh 平滑）；
+    # 选 "coulomb_viscous" 时它是故意的未建模失配。非完整静摩擦/迟滞模型。
     low_speed_friction: float = 0.04
     friction_velocity: float = 0.08
     disturbance_amplitude: float = 0.02

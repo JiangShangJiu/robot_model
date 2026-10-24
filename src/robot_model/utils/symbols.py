@@ -15,7 +15,15 @@ def _sym(name: str) -> sympy.Symbol:
 
 
 class RobotSymbols:
-    """q / dq / ddq 与惯性、摩擦等符号。"""
+    """q / dq / ddq 与惯性、摩擦等符号。
+
+    ``stribeck_velocity`` 是 Stribeck 摩擦项的特征速度 v_s（rad/s），
+    属于固定的模型常数而非待辨识符号：它非线性地进入
+    ``exp(-(dq/v_s)^2)``，若作为未知量会破坏 τ=Hπ 的参数线性性。
+    只在 ``frictionmodel`` 含 ``"Stribeck"`` 时参与模型。
+    """
+
+    DEFAULT_STRIBECK_VELOCITY = 0.1
 
     def __init__(
         self,
@@ -26,6 +34,7 @@ class RobotSymbols:
         driveinertiamodel: str | None = None,
         gravityacc: sympy.Matrix | None = None,
         dyn_parms_order: str = "khalil",
+        stribeck_velocity: float | Iterable[float] | None = None,
     ):
         if dof < 1:
             raise ValueError("dof must be >= 1")
@@ -33,6 +42,18 @@ class RobotSymbols:
         self.dof = int(dof)
         self.frictionmodel = None if frictionmodel is None else set(frictionmodel)
         self.driveinertiamodel = driveinertiamodel
+        from .validation import vector
+
+        self.stribeck_velocity = tuple(
+            vector(
+                self.DEFAULT_STRIBECK_VELOCITY
+                if stribeck_velocity is None
+                else stribeck_velocity,
+                self.dof,
+                "stribeck_velocity",
+                positive=True,
+            ).tolist()
+        )
         self.gravityacc = (
             sympy.Matrix([[0.0], [0.0], [-9.81]])
             if gravityacc is None
@@ -77,6 +98,7 @@ class RobotSymbols:
             "Ia": self.Ia[i],
             "fv": self.fv[i],
             "fc": self.fc[i],
+            "fs": self.fs[i],
             "fo": self.fo[i],
             "L_from_I": L_from_I,
             "I_from_L": I_from_L,
@@ -126,6 +148,8 @@ class RobotSymbols:
                     parms += [self.fv[i]]
                 if "Coulomb" in self.frictionmodel:
                     parms += [self.fc[i]]
+                if "Stribeck" in self.frictionmodel:
+                    parms += [self.fs[i]]
                 if "offset" in self.frictionmodel:
                     parms += [self.fo[i]]
         return parms
@@ -163,9 +187,10 @@ class RobotSymbols:
         ]
         # 电机/驱动侧等效转动惯量（简化模型）
         self.Ia = [_sym(f"Ia_{i + 1}") for i in range(n)]
-        # 粘性 / 库仑 / 偏置摩擦
+        # 粘性 / 库仑 / Stribeck 峰值 / 偏置摩擦
         self.fv = [_sym(f"fv_{i + 1}") for i in range(n)]
         self.fc = [_sym(f"fc_{i + 1}") for i in range(n)]
+        self.fs = [_sym(f"fs_{i + 1}") for i in range(n)]
         self.fo = [_sym(f"fo_{i + 1}") for i in range(n)]
 
         self.dict_l2mr = {}

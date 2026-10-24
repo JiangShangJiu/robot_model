@@ -26,9 +26,8 @@ import numpy as np
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 
-from robot_model import Robot  # noqa: E402
 from robot_model.data import MotionData  # noqa: E402
-from robot_model.experiments.realistic import parameters  # noqa: E402
+from robot_model.experiments.realistic import identification_robot, parameters  # noqa: E402
 from robot_model.experiments.pipeline import prepare_measurements  # noqa: E402
 from robot_model.identification import predict_torque  # noqa: E402
 from robot_model.simulation import RealisticMujocoSource, RealismConfig  # noqa: E402
@@ -315,8 +314,10 @@ def main():
     description = module.setup()
     dof = description.dof
 
-    robot = Robot.from_mdh(description.name, description.mdh_parms,
-                           frictionmodel={"viscous", "Coulomb"}, driveinertiamodel="simplified")
+    # 旧报告没有 friction_model 字段，等价于 coulomb_viscous。
+    friction_model = report["fit"].get("friction_model", "coulomb_viscous")
+    robot = identification_robot(description, friction_model,
+                                 stribeck_velocity=report["fit"].get("stribeck_velocity_rad_s"))
     dynamics = robot.dynamics
     dynamics.calc_base_parms(samples=description.base_parms_samples)
     dynamics.gen_base_regressor()
@@ -324,7 +325,8 @@ def main():
     # 用同一个种子复现对象扰动，仅供真值对照，不参与任何估计
     source = RealisticMujocoSource(mujoco.MjModel.from_xml_path(str(description.xml_path)), config)
     nominal_parms = parameters(robot, source.nominal_model, description.body_names)
-    plant_parms = parameters(robot, source.model, description.body_names)
+    plant_parms = parameters(robot, source.model, description.body_names,
+                             stribeck=config.low_speed_friction)
     fitted = np.asarray(report["fit"]["parameters"], float)
     np.testing.assert_allclose(
         np.linalg.norm(fitted - plant_parms) / np.linalg.norm(plant_parms),

@@ -21,9 +21,11 @@ import shutil
 
 import numpy as np
 
-from robot_model import Robot
 from robot_model.data import MotionData
-from robot_model.experiments.realistic import nominal_recovery_parameters
+from robot_model.experiments.realistic import (
+    identification_robot,
+    nominal_recovery_parameters,
+)
 from robot_model.experiments.pipeline import torque_rms
 from robot_model.identification import RecoveryConfig, predict_torque, recover_inertial_parameters
 
@@ -49,8 +51,11 @@ def run_saved_recovery(robot_name, input_dir, output_dir, config):
         if not (input_dir / name).is_file():
             raise ValueError(f'缺少独立验证数据：{name}')
     setup = import_module(f'robot_model.experiments.{robot_name}').setup()
-    robot = Robot.from_mdh(setup.name, setup.mdh_parms,
-        frictionmodel={'viscous', 'Coulomb'}, driveinertiamodel='simplified')
+    # 旧报告没有 friction_model 字段，等价于 coulomb_viscous；
+    # 基参数表达式校验仍然兜底，防止模型定义漂移。
+    friction_model = report['fit'].get('friction_model', 'coulomb_viscous')
+    robot = identification_robot(setup, friction_model,
+        stribeck_velocity=report['fit'].get('stribeck_velocity_rad_s'))
     dyn = robot.dynamics
     dyn.calc_base_parms(samples=setup.base_parms_samples)
     dyn.gen_base_regressor()

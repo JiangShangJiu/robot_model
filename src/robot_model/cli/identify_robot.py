@@ -49,6 +49,14 @@ def main() -> None:
     parser.add_argument("--recover-inertia", action="store_true",
                         help="辨识后以名义模型为初值，恢复物理可行的逐连杆质量、质心和惯性张量")
     parser.add_argument("--recovery-config", type=Path, help="惯性参数恢复约束 JSON，需要 --recover-inertia")
+    parser.add_argument("--friction-model", choices=("coulomb_viscous", "stribeck"),
+                        default="coulomb_viscous",
+                        help="辨识模型的摩擦项：coulomb_viscous（粘性+库仑，默认）或 "
+                             "stribeck（再加高斯低速摩擦峰 fs*exp(-(dq/v_s)^2)*sign(dq)，"
+                             "更接近实机起动摩擦；v_s 取配置的 friction_velocity）")
+    parser.add_argument("--min-speed", type=float, default=None,
+                        help="低速剔除阈值 rad/s；默认 coulomb_viscous 0.08、stribeck 0.02"
+                             "（Stribeck 项需保留低速样本才可观测）")
     args = parser.parse_args()
     optimize = (args.robot == "rrr" if args.optimize_excitation is None
                 else args.optimize_excitation)
@@ -82,6 +90,7 @@ def main() -> None:
             optimization_maxiter=args.optimization_maxiter,
             robust_seeds=args.robust_seeds, periodic_average=args.average_periods,
             recover=args.recover_inertia, recovery_config=recovery_config,
+            friction_model=args.friction_model, min_speed=args.min_speed,
         )
     except NoFeasibleExcitation as exc:
         location = (f"；报告：{args.output_dir.resolve() / 'screening.json'}" if args.output_dir else "")

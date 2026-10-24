@@ -20,6 +20,8 @@
 
 RRR 和 Franka 均采用 MuJoCo 闭环采集，用独立轨迹验证辨识结果，并完成了惯性参数恢复。控制、摩擦与传感器参数是仿真假设，未经实机标定。
 
+仿真对象带粘性 + 库仑摩擦和一个高斯型低速摩擦峰（Stribeck 效应）。本页展示结果使用默认的 `coulomb_viscous` 辨识摩擦模型，低速摩擦峰留作故意的未建模失配，并剔除 |dq|<0.08 rad/s 的样本。`--friction-model stribeck` 可在辨识模型中显式加入该峰（每关节新增线性幅值参数 fs，特征速度 v_s 为固定模型常数），默认把低速剔除阈值降到 0.02 rad/s 以保留 Stribeck 可观测的样本；模型形式与局限见[工程原理](docs/principles.md#22-逆动力学算的是关节力矩)。
+
 - RRR（3 轴）：22/22 基参数满秩，训练力矩 RMSE 0.0143 N·m；独立验证总体 RMSE 从名义模型的 0.4964 降到 0.0350 N·m，降低 93.0%。基参数相对对象真值投影误差 5.19%。[图表与逐轴结果](#rrr-results) · [完整报告](docs/figures/rrr/report.json)
 - Franka Panda（7 轴）：62/62 基参数满秩，训练力矩 RMSE 0.0163 N·m；独立验证总体 RMSE 从 0.4354 降到 0.0576 N·m，降低 86.8%。基参数相对对象真值投影误差 2.98%。[图表与逐轴结果](#franka-results) · [完整报告](docs/figures/franka/report.json)
 
@@ -63,6 +65,13 @@ robot-identify --robot rrr --trials 6 --periods 3 \
 robot-identify --robot rrr --recover-inertia \
   --recovery-config configs/rrr/recovery.json \
   --output-dir outputs/rrr/recovered
+
+# 辨识模型显式加入 Stribeck 低速摩擦峰（更接近实机起动摩擦），
+# 并保留更低速的样本；两种模式的基参数数组不能互用
+robot-identify --robot rrr --friction-model stribeck \
+  --config configs/rrr/realistic.json \
+  --screening-config configs/rrr/screening.json \
+  --trials 12 --periods 2 --output-dir outputs/rrr/stribeck
 
 # Franka 闭环实验；默认关闭傅里叶系数优化
 robot-identify --robot franka \
