@@ -175,6 +175,8 @@ def test_independent_validation_improves_over_nominal_and_saves_reproducible_dat
     report = run_experiment(default_config(), trials=4, periods=1,
                             optimize=False, output_dir=tmp_path)
     assert report['fit']['identifiable']
+    assert report['fit']['friction_model'] == 'coulomb_viscous'
+    assert report['min_speed_rad_s'] == 0.08
     scores = report['validation_rms_Nm']
     assert np.linalg.norm(scores['truth_fitted']) < np.linalg.norm(scores['truth_nominal'])
     assert np.max(report['validation']['tracking_rms_rad']) < .1
@@ -185,3 +187,31 @@ def test_independent_validation_improves_over_nominal_and_saves_reproducible_dat
     assert not np.array_equal(train['desired_q'], validation['desired_q'])
     saved = json.loads((tmp_path / 'report.json').read_text())
     assert saved['config']['seed'] == 0
+
+
+def test_stribeck_friction_model_runs_closed_loop_and_is_recorded(tmp_path):
+    """Stribeck 模式：基参数多 3 个 fs、默认保留更低速样本、报告记录模型。"""
+    pytest.importorskip('mujoco')
+    pytest.importorskip('scipy')
+    report = run_experiment(default_config(), trials=4, periods=1,
+                            optimize=False, friction_model='stribeck',
+                            output_dir=tmp_path)
+    assert report['fit']['identifiable']
+    assert report['fit']['friction_model'] == 'stribeck'
+    assert report['fit']['friction_terms'] == ['Coulomb', 'Stribeck', 'viscous']
+    # v_s 取配置的 friction_velocity（对象低速摩擦峰的特征速度）
+    config = default_config()
+    assert report['fit']['stribeck_velocity_rad_s'] == [config.friction_velocity] * 3
+    assert report['fit']['n_parms'] == 25  # coulomb_viscous 为 22，fs 各自独立成基参数
+    assert report['min_speed_rad_s'] == 0.02
+    assert '|dq|<0.02' in report['preprocessing']
+    scores = report['validation_rms_Nm']
+    assert np.linalg.norm(scores['truth_fitted']) < np.linalg.norm(scores['truth_nominal'])
+    saved = json.loads((tmp_path / 'report.json').read_text())
+    assert saved['fit']['friction_model'] == 'stribeck'
+
+
+def test_unknown_friction_model_is_rejected_before_simulation():
+    pytest.importorskip('mujoco')
+    with pytest.raises(ValueError, match='摩擦模型'):
+        run_experiment(default_config(), friction_model='lugre')

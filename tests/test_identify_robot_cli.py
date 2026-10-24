@@ -34,6 +34,27 @@ def test_optimization_defaults_and_explicit_overrides(monkeypatch, robot, argume
     assert captured["optimize"] is expected
 
 
+@pytest.mark.parametrize("arguments,friction_model,min_speed", [
+    ([], "coulomb_viscous", None),
+    (["--friction-model", "stribeck"], "stribeck", None),
+    (["--friction-model", "stribeck", "--min-speed", "0.03"], "stribeck", 0.03),
+])
+def test_friction_model_and_min_speed_pass_through(monkeypatch, arguments,
+                                                   friction_model, min_speed):
+    captured = {}
+
+    def run_experiment(actual_config, **kwargs):
+        captured.update(kwargs)
+        return {"status": "completed"}
+
+    monkeypatch.setattr(identify_robot, "_load_robot",
+                        lambda name: (lambda: object(), run_experiment))
+    monkeypatch.setattr(sys, "argv", ["robot-identify", "--robot", "rrr", *arguments])
+    identify_robot.main()
+    assert captured["friction_model"] == friction_model
+    assert captured["min_speed"] == min_speed
+
+
 def test_help_explains_robot_specific_optimization_defaults(monkeypatch, capsys):
     monkeypatch.setattr(sys, "argv", ["robot-identify", "--help"])
     with pytest.raises(SystemExit) as caught:

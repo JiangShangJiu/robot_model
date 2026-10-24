@@ -36,7 +36,40 @@ from robot_model.identification import (
 )
 from robot_model.simulation import RealisticMujocoSource
 from robot_model.simulation.reference import MujocoReference
-from robot_model.utils.validation import integer
+from robot_model.utils.validation import integer, vector
+
+# 辨识模型的摩擦项选项。对象仿真始终含粘性/库仑摩擦与高斯低速摩擦峰
+# （RealismConfig.low_speed_friction / friction_velocity）；
+# "coulomb_viscous" 把低速峰留作故意的未建模失配，
+# "stribeck" 则在辨识模型中显式加入 Stribeck 项 fs*exp(-(dq/v_s)^2)*sign(dq)。
+FRICTION_MODELS = {
+    "coulomb_viscous": ("viscous", "Coulomb"),
+    "stribeck": ("viscous", "Coulomb", "Stribeck"),
+}
+
+# 低速剔除阈值（rad/s）。sign(dq) 在过零附近失配，必须剔除极低速样本；
+# Stribeck 项主要在 |dq| ~ v_s 内才可观测，阈值过高会把信息样本全部丢掉。
+DEFAULT_MIN_SPEED = {"coulomb_viscous": 0.08, "stribeck": 0.02}
+
+
+def identification_robot(setup, friction_model="coulomb_viscous", *,
+                         stribeck_velocity=None):
+    """构造辨识用符号模型。
+
+    ``stribeck_velocity`` 是固定模型常数（不参与最小二乘），
+    仅 ``friction_model="stribeck"`` 时使用；None 取符号层默认值。
+    """
+    if friction_model not in FRICTION_MODELS:
+        raise ValueError(
+            f"未知摩擦模型 {friction_model!r}；可选 {sorted(FRICTION_MODELS)}")
+    kwargs = {}
+    if "Stribeck" in FRICTION_MODELS[friction_model] and stribeck_velocity is not None:
+        kwargs["stribeck_velocity"] = stribeck_velocity
+    return Robot.from_mdh(
+        setup.name, setup.mdh_parms,
+        frictionmodel=set(FRICTION_MODELS[friction_model]),
+        driveinertiamodel="simplified", **kwargs,
+    )
 
 
 @dataclass(frozen=True)
@@ -71,13 +104,24 @@ class RealisticSetup:
         return len(self.mdh_parms)
 
 
-def parameters(robot, model, body_names):
-    """仅评分使用：从 MuJoCo 模型读取惯性、摩擦和 armature。"""
+def parameters(robot, model, body_names, *, stribeck=None):
+    """仅评分使用：从 MuJoCo 模型读取惯性、摩擦和 armature。
+
+    ``stribeck`` 是对象侧高斯低速摩擦峰的幅值（经 ``qfrc_applied`` 注入，
+    不在 MJCF 字段中），仅当辨识模型含 Stribeck 项时进入真值投影；
+    名义模型没有该峰，留 None 即补零。
+    """
+    symbols = robot.symbols
+    has_stribeck = bool(symbols.frictionmodel) and "Stribeck" in symbols.frictionmodel
+    fs_truth = vector(0.0 if stribeck is None else stribeck, robot.dof,
+                      "stribeck", nonnegative=True)
     ref = MujocoReference(model, body_names)
     full = []
     for i, link in enumerate(ref.links):
         full.extend([*link.Le, *link.l, link.m, model.dof_armature[i],
                      model.dof_damping[i], model.dof_frictionloss[i]])
+        if has_stribeck:
+            full.append(fs_truth[i])
     dyn = robot.dynamics
     return (np.asarray(dyn.Pb, float).T + np.asarray(dyn.Kd, float) @ np.asarray(dyn.Pd, float).T) @ full
 
@@ -91,13 +135,16 @@ def nominal_recovery_parameters(robot, nominal_model, body_names):
         extras[str(symbols.Ia[i])] = float(nominal_model.dof_armature[i])
         extras[str(symbols.fv[i])] = float(nominal_model.dof_damping[i])
         extras[str(symbols.fc[i])] = float(nominal_model.dof_frictionloss[i])
+        if symbols.frictionmodel and "Stribeck" in symbols.frictionmodel:
+            # 名义 MJCF 没有低速摩擦峰字段，Stribeck 幅值初值为 0。
+            extras[str(symbols.fs[i])] = 0.0
     return pack_inertial_parameters(
         robot, [link.m for link in ref.links], [link.r for link in ref.links],
         [link.I for link in ref.links], extras=extras,
     )
 
 
-def prepare(data, config, cutoff=5.0, *, period=None, cycles=None):
+def prepare(data, config, cutoff=5.0, *, period=None, cycles=None, min_speed=0.08):
     """测量预处理：读取 RealismConfig 中的传感器延迟。"""
     s = config.sensors
     return prepare_measurements(
@@ -107,6 +154,7 @@ def prepare(data, config, cutoff=5.0, *, period=None, cycles=None):
         cutoff=cutoff,
         period=period,
         cycles=cycles,
+        min_speed=min_speed,
     )
 
 
@@ -114,11 +162,17 @@ def run_experiment(setup, config, *, trials=12, periods=2, output_dir=None,
                    screen=True, screening_criteria=None, optimize=True,
                    optimization_starts=2, optimization_maxiter=20,
                    robust_seeds=None, periodic_average=False,
-                   recover=False, recovery_config=None):
+                   recover=False, recovery_config=None,
+                   friction_model="coulomb_viscous", min_speed=None):
     import mujoco
 
     integer(trials, 'trials', 1)
     integer(periods, 'periods', 1)
+    if friction_model not in FRICTION_MODELS:
+        raise ValueError(f"未知摩擦模型 {friction_model!r}；可选 {sorted(FRICTION_MODELS)}")
+    if min_speed is None:
+        min_speed = DEFAULT_MIN_SPEED[friction_model]
+    min_speed = float(vector(min_speed, 1, "min_speed", nonnegative=True)[0])
     if recovery_config is not None and not recover:
         raise ValueError('recovery_config 需要 recover=True')
     if recovery_config is not None and not isinstance(recovery_config, RecoveryConfig):
@@ -142,14 +196,17 @@ def run_experiment(setup, config, *, trials=12, periods=2, output_dir=None,
     source = RealisticMujocoSource(nominal, config)
     def preprocess(data, trajectory):
         return prepare(data, config, period=trajectory.period if periodic_average else None,
-                       cycles=periods if periodic_average else None)
-    robot = Robot.from_mdh(setup.name, setup.mdh_parms,
-                           frictionmodel={"viscous", "Coulomb"}, driveinertiamodel="simplified")
+                       cycles=periods if periodic_average else None, min_speed=min_speed)
+    # Stribeck 特征速度取实验配置的 friction_velocity（与对象的低速摩擦峰一致）。
+    # 它是实验假设而非扰动真值；实机上需要另行标定或网格搜索。
+    robot = identification_robot(setup, friction_model,
+                                 stribeck_velocity=config.friction_velocity)
     dyn = robot.dynamics
     dyn.calc_base_parms(samples=setup.base_parms_samples)
     dyn.gen_base_regressor()
     Hb = dyn.Hb_func
-    print(f"实机近似模式：基参数 {dyn.n_base}，物理 {1/config.physics_dt:g} Hz，控制/采样 {1/config.control_dt:g} Hz")
+    print(f"实机近似模式：摩擦模型 {friction_model}，基参数 {dyn.n_base}，"
+          f"物理 {1/config.physics_dt:g} Hz，控制/采样 {1/config.control_dt:g} Hz")
     print("参数为仿真假设；测量反馈进入闭环，真值只用于离线评分。")
 
     limits = None if config.joint_lower is None else (config.joint_lower, config.joint_upper)
@@ -226,7 +283,7 @@ def run_experiment(setup, config, *, trials=12, periods=2, output_dir=None,
                 selection = screen_excitation(
                     Hb, candidates,
                     lambda trajectory: source.run(trajectory, periods=periods, seed=config.seed+303),
-                    lambda data: prepare(data, config),
+                    lambda data: prepare(data, config, min_speed=min_speed),
                     criteria=screening_criteria, progress=progress)
         except NoFeasibleExcitation as exc:
             save_screening(exc.report)
@@ -272,7 +329,8 @@ def run_experiment(setup, config, *, trials=12, periods=2, output_dir=None,
         recovery_payload['prior_source'] = 'source.nominal_model (unperturbed MJCF)'
         recovery_payload['nominal_parameters'] = nominal_full.tolist()
     nominal_parms = parameters(robot, source.nominal_model, setup.body_names)
-    plant_parms = parameters(robot, source.model, setup.body_names)
+    plant_parms = parameters(robot, source.model, setup.body_names,
+                             stribeck=config.low_speed_friction)
 
     # truth 仅在辨识结束后评分，不影响预处理、估计或反馈。
     truth = validation.truth
@@ -289,11 +347,17 @@ def run_experiment(setup, config, *, trials=12, periods=2, output_dir=None,
         "screening": screening_report,
         "mujoco_version": mujoco.__version__,
         "assumptions": setup.assumptions,
-        "preprocessing": "已知整数通道延迟补偿，5 Hz 零相位低通，去两端 0.3 s，剔除任一关节 |dq|<0.08",
+        "preprocessing": ("已知整数通道延迟补偿，5 Hz 零相位低通，去两端 0.3 s，"
+                          f"剔除任一关节 |dq|<{min_speed:g}"),
+        "min_speed_rad_s": min_speed,
         "trajectory_condition_number": {"train": cond, "validation": val_cond},
         "train": train.diagnostics,
         "validation": validation.diagnostics,
         "fit": {
+            "friction_model": friction_model,
+            "friction_terms": sorted(FRICTION_MODELS[friction_model]),
+            "stribeck_velocity_rad_s": (list(robot.symbols.stribeck_velocity)
+                                        if friction_model == "stribeck" else None),
             "rank": result.rank, "n_parms": result.n_parms,
             "identifiable": result.rank == result.n_parms,
             "condition_number": result.condition_number,
