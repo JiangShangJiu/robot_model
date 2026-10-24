@@ -24,6 +24,9 @@ dev = ["pytest>=7.0", "nbformat>=5.7", "nbclient>=0.7", "scipy>=1.10"]
 robot-identify = "robot_model.cli.identify_robot:main"
 robot-identify-rrr = "robot_model.cli.identify_rrr:main"
 robot-view-franka = "robot_model.cli.view_franka:main"
+robot-demo-hardware-id = "robot_model.cli.demo_hardware_id:main"
+robot-demo-contact = "robot_model.cli.demo_contact_safety:main"
+robot-demo-vla = "robot_model.cli.demo_vla_bridge:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
